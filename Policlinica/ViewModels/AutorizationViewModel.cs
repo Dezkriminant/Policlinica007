@@ -13,7 +13,7 @@ public partial class AutorizationViewModel : ViewModelBase
     private readonly IServiceProvider _provider;
     private readonly Navigation _navigation;
 
-    [ObservableProperty] string _username;
+    [ObservableProperty] string _login;
     [ObservableProperty] string _password;
     [ObservableProperty] List<User> _usersList;
     [ObservableProperty] UserRepository _repository;
@@ -33,9 +33,9 @@ public partial class AutorizationViewModel : ViewModelBase
         
         var vm = ActivatorUtilities.CreateInstance<AdminWindowViewModel>(
             _provider,
-            Username);
+            Login);
         var win = _provider.GetRequiredService<AdminWindow>();
-        //vm.SetClose(win.Close);
+            //vm.SetClose(win.Close);
         win.DataContext = vm;
         win.Show();
         // close();
@@ -44,13 +44,7 @@ public partial class AutorizationViewModel : ViewModelBase
     [RelayCommand]
     public void SaveDB()
     {
-        User user = new User
-        {
-            Name = Username,
-            Password = Password
-        };
-       // if(Users user )
-        _repository.CheckLoginAndPassword(Username,Password);
+         _repository.CheckLoginAndPassword(Login,Password);
         var vm = _provider.GetRequiredService<AdminWindowViewModel>();
         var win = _provider.GetRequiredService<AdminWindow>();
         

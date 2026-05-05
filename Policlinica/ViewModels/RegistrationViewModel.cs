@@ -48,7 +48,6 @@ public partial class RegistrationViewModel:ViewModelBase
           win.DataContext = vm;
           win.Show(); 
             _navigation.Close();
-        
     }
     
 

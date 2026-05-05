@@ -4,9 +4,14 @@
     <option name="projectPerEditor">
       <map>
         <entry key="Policlinica/App.axaml" value="Policlinica/Policlinica.csproj" />
+        <entry key="Policlinica/Views/AdminWindow.axaml" value="Policlinica/Policlinica.csproj" />
+        <entry key="Policlinica/Views/AutorizationView.axaml" value="Policlinica/Policlinica.csproj" />
         <entry key="Policlinica/Views/PasswordWindow.axaml" value="Policlinica/Policlinica.csproj" />
+        <entry key="Policlinica/Views/Records.axaml" value="Policlinica/Policlinica.csproj" />
+        <entry key="Policlinica/Views/RegistrationView.axaml" value="Policlinica/Policlinica.csproj" />
         <entry key="Policlinica/Views/RegistrationWindow.axaml" value="Policlinica/Policlinica.csproj" />
         <entry key="Policlinica/Views/Rexord.axaml" value="Policlinica/Policlinica.csproj" />
+        <entry key="Policlinica/Views/StartView.axaml" value="Policlinica/Policlinica.csproj" />
         <entry key="Policlinica/Views/StartWindow.axaml" value="Policlinica/Policlinica.csproj" />
       </map>
     </option>

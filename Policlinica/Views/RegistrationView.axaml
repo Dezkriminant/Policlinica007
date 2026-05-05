@@ -8,15 +8,12 @@
         x:DataType="viewModels:RegistrationViewModel">
   
     <Border BorderBrush="Aqua" CornerRadius="8"  BorderThickness="2"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
-        
-        
-        
         <StackPanel Spacing="5">
            <Label FontWeight="Bold" Content="Регистрация" HorizontalAlignment="Center"/>
-           <TextBlock Text="ИМЯ" HorizontalAlignment="Center"/>
-           <TextBox Watermark="Придумайте пароль" Text="{Binding Password}"/>
            <TextBlock Text="Логин" HorizontalAlignment="Center"/>
-           <TextBox Watermark="Придумайте логин" Text="{Binding Login}"/>
+           <TextBox Watermark="Придумайте имя" Text="{Binding Login}"/>
+           <TextBlock Text="Пароль" HorizontalAlignment="Center"/>
+           <TextBox Watermark="Придумайте пароль" Text="{Binding Password}"/>
            <StackPanel Orientation="Horizontal">
                <Button Content= "Зарегистрироваться" Command="{Binding RegistrationCommand}"/>
                <HyperlinkButton Command="{Binding OpenAutorizationCommand}" Content="Авторизоваться"/>
