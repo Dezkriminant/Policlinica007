@@ -59,6 +59,5 @@ public partial class AutorizationViewModel : ViewModelBase
     {
         var vm = _provider.GetRequiredService<RegistrationViewModel>();
         _navigation.Navigate(vm);
-        
     }
 }

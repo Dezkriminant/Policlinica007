@@ -43,12 +43,15 @@ public partial class RegistrationViewModel:ViewModelBase
                 rep.AddUser(user);
             }
         
-            var vm =  ActivatorUtilities.CreateInstance<RecordViewModel>(_serviceProvider);
-            var win = _serviceProvider.GetRequiredService<Records>();
-          win.DataContext = vm;
-          win.Show(); 
-            _navigation.Close();
+          //  var vm =  ActivatorUtilities.CreateInstance<RecordViewModel>(_serviceProvider);
+           // var win = _serviceProvider.GetRequiredService<Records>();
+          //win.DataContext = vm;
+          //win.Show(); 
+            //_navigation.Close();
+            var vm = _serviceProvider.GetRequiredService<AutorizationViewModel>();
+            _navigation.Navigate(vm);
     }
+
     
 
 }
