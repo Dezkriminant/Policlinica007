@@ -17,7 +17,7 @@
                        <DataGridTextColumn Binding="{Binding Title}" Header="Врач"/>
                        <DataGridTextColumn Binding="{Binding Name}" Header="Логин"/>
                        <DataGridTextColumn Binding="{Binding TotalAmount}" Header="Цена"/>
-                       <DataGridTextColumn Binding="{Binding DoctorId}" Header="Сервис"/>
+                       <DataGridTextColumn Binding="{Binding Title}" Header="Услуга"/>
                        <DataGridTextColumn Binding="{Binding RecordDate}" Header="Дата"/>
                    </DataGrid.Columns>
                </DataGrid>

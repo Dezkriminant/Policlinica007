@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Policlinica")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5ea6c321ff322a6400ba20562875c62bbdf2dcb8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4407015adc26f82850c90f3ec73288b176f64b4a")]
 [assembly: System.Reflection.AssemblyProductAttribute("Policlinica")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Policlinica")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
