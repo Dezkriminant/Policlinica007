@@ -25,7 +25,9 @@
                    
            
                 <Button Content="Удалить выбранную работу" FontSize="20" HorizontalAlignment="Center" Command="{Binding DeleteRecordCommand}"/>
-                <Button Content="Добавить запись" FontSize="20" HorizontalAlignment="Center" Command="{Binding }"/>
+                <Button Content="Добавить запись" FontSize="20" HorizontalAlignment="Center" Command="{Binding GoServiceCommand}"/>
            </StackPanel>
         </Grid>
 </UserControl>
+<!-->я устал<!-->
+<!-->я тоже<!-->

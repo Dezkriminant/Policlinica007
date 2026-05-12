@@ -12,7 +12,6 @@ namespace Policlinica.ViewModels;
 
 public partial class AdminWindowViewModel : ViewModelBase
 {
-    private readonly IServiceProvider _serviceProvider;
     private readonly Navigation _navigation;
     private readonly IServiceProvider _provider;
     private readonly RecordRep _recordRep;
@@ -22,9 +21,9 @@ public partial class AdminWindowViewModel : ViewModelBase
     [ObservableProperty] ObservableCollection<Record>  _recordsList = new();
     [ObservableProperty] private Record _selectedRecord;
 
-    public AdminWindowViewModel(IServiceProvider serviceProvider, Navigation navigation, IServiceProvider provider, RecordRep recordRep)
+    public AdminWindowViewModel( Navigation navigation, IServiceProvider provider, RecordRep recordRep)
     {
-        _serviceProvider = serviceProvider;
+        
         _navigation = navigation;
         _provider = provider;
         _recordRep = recordRep;
@@ -37,5 +36,12 @@ public partial class AdminWindowViewModel : ViewModelBase
     {
         _recordRep.Delete(SelectedRecord.Id);
         RecordsList = new ObservableCollection<Record>(_recordRep.GetRecord());
+    }
+
+    [RelayCommand]
+    void GoService()
+    {
+        var vm = _provider.GetRequiredService<ServiceViewModel>();
+        _navigation.Navigate(vm);
     }
 }

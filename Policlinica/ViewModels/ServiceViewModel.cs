@@ -12,6 +12,7 @@ namespace Policlinica.ViewModels;
 
 public partial class ServiceViewModel : ViewModelBase
 {
+    
     private readonly IServiceProvider _provider;
     private readonly Navigation _navigation;
     [ObservableProperty] List<ServiceSelected> _services;
@@ -25,7 +26,7 @@ public partial class ServiceViewModel : ViewModelBase
         _navigation = navigation;
         _selectedDoctor = selectedDoctor;
         _serviceRepository = repository;
-        Services = repository.GetServicesByDoctors(selectedDoctor).Select(service => new ServiceSelected(service)).ToList();
+        //Services = repository.GetServicesByDoctors(selectedDoctor.Id).Select(service => new ServiceSelected(service)).ToList();
     }
 
 
@@ -34,13 +35,13 @@ public partial class ServiceViewModel : ViewModelBase
     public void Dobavlenie()
     {
         {
-            List<Service> works = new List<Service>();
+            List<Service> services = new List<Service>();
 
             foreach (ServiceSelected s in Services)
             {
                 if (s.IsSelected == true)
                 {
-                    works.Add(s.Service);
+                    services.Add(s.Service);
                 }
             }
 
@@ -52,7 +53,7 @@ public partial class ServiceViewModel : ViewModelBase
             var win = _provider.GetRequiredService<ServiceWindow>();
           //  vm.SetClose(win.Close);
             win.DataContext = vm;
-            win.Show();
+           // win.Show();
            // close();
         }
 

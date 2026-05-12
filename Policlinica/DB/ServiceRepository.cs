@@ -48,10 +48,10 @@ public class ServiceRepository : BaseRep
         return result;
     }
     
-    public List<Service> GetServicesByDoctors( Doctor selectedDoctor)
+    public List<Service> GetServicesByDoctors(int id)
     {
         List<Service> s = new List<Service>();
-        string sql = "select * from services where doctor_id = " + selectedDoctor.Id;
+        string sql = "select * from services where doctor_id =@id";
         try
         {
             connection.Open();

@@ -62,7 +62,7 @@ public partial class RegistrationViewModel : ViewModelBase
             //win.DataContext = vm;
             //win.Show(); 
             //_navigation.Close();
-            var vm = _serviceProvider.GetRequiredService<AdminWindowViewModel>();
+            var vm = _serviceProvider.GetRequiredService<AutorizationViewModel>();
             _navigation.Navigate(vm);
         }
     }
