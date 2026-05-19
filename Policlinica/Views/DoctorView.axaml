@@ -3,26 +3,49 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:Policlinica.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
         x:Class="Policlinica.Views.DoctorView"
         x:DataType="vm:DoctorViewModel">
     
-    <Border BorderBrush="Aqua" CornerRadius="8"  BorderThickness="2"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"> 
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="40" Spacing="20">
         
-        <TextBlock Text="Создание заказа" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+        <TextBlock Text="Создание записи" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
         
-        <TextBlock Text="Введите имя клиента:" />
-        <TextBox Text="{Binding Name}"/>
+        <!-- Ввод имени клиента -->
+        <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+            <StackPanel Spacing="10">
+                <TextBlock Text="Имя клиента:" FontWeight="Bold" FontSize="14"/>
+                <TextBox Text="{Binding Name}" Padding="10" FontSize="13" Watermark="Введите имя"/>
+            </StackPanel>
+        </Border>
         
-        <TextBlock Text="Введите фамилию клиента:" />
-        <TextBox Text="{Binding Surname}"/>
-        
-        <ComboBox ItemsSource="{Binding DoctorList}"
-                  SelectedItem="{Binding SelectedDoctor}"
-                  DisplayMemberBinding="{Binding Title}"/>
+        <!-- Ввод фамилии клиента -->
+        <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+            <StackPanel Spacing="10">
+                <TextBlock Text="Фамилия клиента:" FontWeight="Bold" FontSize="14"/>
+                <TextBox Text="{Binding Surname}" Padding="10" FontSize="13" Watermark="Введите фамилию"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Выбор врача -->
+        <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+            <StackPanel Spacing="10">
+                <TextBlock Text="Выберите врача:" FontWeight="Bold" FontSize="14"/>
+                <ComboBox ItemsSource="{Binding DoctorList}"
+                          SelectedItem="{Binding SelectedDoctor}"
+                          DisplayMemberBinding="{Binding Title}"
+                          Padding="10"
+                          FontSize="13"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Кнопка -->
         <Button Content="Далее" 
+                FontSize="16" 
+                Padding="20,12" 
+                Background="Green" 
+                Foreground="White"
+                HorizontalAlignment="Center"
                 Command="{Binding StartTestCommand}"/>
     </StackPanel>
-    </Border>
 </UserControl>

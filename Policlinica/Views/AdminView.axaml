@@ -1,33 +1,53 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
         x:Class="Policlinica.Views.AdminView"
         x:DataType="viewModels:AdminViewModel">
         
-        <Grid RowDefinitions="Auto,*,Auto" Margin="20">
-               <DataGrid ItemsSource="{Binding RecordsList }" SelectedItem="{Binding SelectedRecord }">
-                   <DataGrid.Columns>
-                       <DataGridCheckBoxColumn IsVisible="True"/>
-                       <!--><DataGridCheckBoxColumn/><!-->
-                       <DataGridTextColumn Binding="{Binding ClientName}" Header="Имя клиента"/>
-                       <DataGridTextColumn Binding="{Binding ClientSurname}" Header="Фамилия клиента"/>
-                       <DataGridTextColumn Binding="{Binding Title}" Header="Врач"/>
-                       <DataGridTextColumn Binding="{Binding Name}" Header="Логин"/>
-                       <DataGridTextColumn Binding="{Binding TotalAmount}" Header="Цена"/>
-                       <DataGridTextColumn Binding="{Binding ServiceName}" Header="Услуга"/>
-                       <DataGridTextColumn Binding="{Binding RecordDate}" Header="Дата"/>
-                   </DataGrid.Columns>
-               </DataGrid>
-           <StackPanel Grid.Row="2" Orientation="Horizontal">
-                   
-           
-                <Button Content="Удалить выбранную работу" FontSize="20" HorizontalAlignment="Center" Command="{Binding DeleteRecordCommand}"/>
-                <Button Content="Добавить запись" FontSize="20" HorizontalAlignment="Center" Command="{Binding GoServiceCommand}"/>
-           </StackPanel>
-        </Grid>
+        <StackPanel Margin="30" Spacing="20">
+                <TextBlock Text="Управление записями" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+                
+                <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+                        <StackPanel Spacing="10">
+                                <TextBlock Text="Список записей:" FontWeight="Bold" FontSize="16"/>
+                                <DataGrid ItemsSource="{Binding RecordsList }" SelectedItem="{Binding SelectedRecord }" MinHeight="300">
+                                        <DataGrid.Columns>
+                                                <DataGridCheckBoxColumn IsVisible="True"/>
+                                                <DataGridTextColumn Binding="{Binding ClientName}" Header="Имя клиента"/>
+                                                <DataGridTextColumn Binding="{Binding ClientSurname}" Header="Фамилия клиента"/>
+                                                <DataGridTextColumn Binding="{Binding Title}" Header="Врач"/>
+                                                <DataGridTextColumn Binding="{Binding TotalAmount}" Header="Цена"/>
+                                                <DataGridTextColumn Binding="{Binding ServiceName}" Header="Услуга"/>
+                                                <DataGridTextColumn Binding="{Binding RecordDate}" Header="Дата"/>
+                                        </DataGrid.Columns>
+                                </DataGrid>
+                        </StackPanel>
+                </Border>
+                
+                <TextBlock Text="{Binding StatusMessage}" Foreground="Green" FontSize="14" TextWrapping="Wrap"/>
+               
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+                        <Button Content="Удалить запись" 
+                                FontSize="16" 
+                                Padding="18,12" 
+                                Background="Red" 
+                                Foreground="White" 
+                                Command="{Binding DeleteRecordCommand}"/>
+                        <Button Content="Добавить запись" 
+                                FontSize="16" 
+                                Padding="18,12" 
+                                Background="Green" 
+                                Foreground="White" 
+                                Command="{Binding GoServiceCommand}"/>
+                        <Button Content="Проверка сахара" 
+                                FontSize="16" 
+                                Padding="18,12" 
+                                Background="Orange" 
+                                Foreground="White" 
+                                Command="{Binding GoSugarCheckCommand}"/>
+                </StackPanel>
+        </StackPanel>
 </UserControl>
-<!-->я устал<!-->
-<!-->я тоже<!-->

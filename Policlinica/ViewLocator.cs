@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Policlinica.ViewModels;
+using Policlinica.Views;
 
 namespace Policlinica;
 
@@ -24,7 +25,15 @@ public class ViewLocator : IDataTemplate
 
         if (type != null)
         {
-            return (Control)Activator.CreateInstance(type)!;
+            var view = (Control)Activator.CreateInstance(type)!;
+            
+            // Специальная обработка для SugarCheckViewModel
+            if (param is SugarCheckViewModel sugarVm && view is SugarCheckView sugarView)
+            {
+                sugarVm.SetView(sugarView);
+            }
+            
+            return view;
         }
 
         return new TextBlock { Text = "Not Found: " + name };

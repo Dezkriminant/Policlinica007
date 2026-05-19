@@ -74,8 +74,8 @@ public class RecordRep:BaseRep
                 mc.Parameters.AddWithValue("@total_amount", record.TotalAmount);
                 mc.Parameters.AddWithValue("@record_date", record.RecordDate);
                 
-                int result = mc.ExecuteNonQuery();
-                Console.WriteLine($"ExecuteNonQuery returned: {result}");
+                mc.ExecuteNonQuery();
+                Console.WriteLine($"ExecuteNonQuery returned");
             }
 
             // Получаем ID последней вставленной записи
@@ -119,21 +119,31 @@ public class RecordRep:BaseRep
 
     public bool Delete(int id)
     {
-        string sql = @"delete from `records` where `id` = @id";
         try
         {
-            using (var mc = new MySqlCommand(sql, connection))
+            // Сначала удаляем все связанные record_items
+            string deleteItemsSql = @"delete from `record_items` where `record_id` = @id";
+            using (var mc = new MySqlCommand(deleteItemsSql, connection))
             {
-                mc.Parameters.AddWithValue("@id",id);
+                mc.Parameters.AddWithValue("@id", id);
                 mc.ExecuteNonQuery();
-                
+                Console.WriteLine($"Deleted record items for record {id}");
             }
-            return true;
 
+            // Затем удаляем саму запись
+            string deleteRecordSql = @"delete from `records` where `id` = @id";
+            using (var mc = new MySqlCommand(deleteRecordSql, connection))
+            {
+                mc.Parameters.AddWithValue("@id", id);
+                mc.ExecuteNonQuery();
+                Console.WriteLine($"Deleted record {id}");
+            }
+            
+            return true;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine($"Error deleting record: {e}");
         }
         return false;
     }

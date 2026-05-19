@@ -22,6 +22,7 @@
         <entry key="Policlinica/Views/ServiecWindow.axaml" value="Policlinica/Policlinica.csproj" />
         <entry key="Policlinica/Views/StartView.axaml" value="Policlinica/Policlinica.csproj" />
         <entry key="Policlinica/Views/StartWindow.axaml" value="Policlinica/Policlinica.csproj" />
+        <entry key="Policlinica/Views/SugarCheckView.axaml" value="Policlinica/Policlinica.csproj" />
       </map>
     </option>
   </component>

@@ -34,4 +34,10 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\SugarCheckView.axaml.cs">
+        <DependentUpon>SugarCheckView.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>
