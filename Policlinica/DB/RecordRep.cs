@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using MySqlConnector;
@@ -57,6 +57,66 @@ public class RecordRep:BaseRep
         }
         return recordsList;
     }
+
+    public int InsertRecord(Record record)
+    {
+        string insertSql = @"insert into `records` (client_name, client_surname, doctor_id, user_id, service_id, total_amount, record_date)
+                       values (@client_name, @client_surname, @doctor_id, @user_id, @service_id, @total_amount, @record_date)";
+        try
+        {
+            using (var mc = new MySqlCommand(insertSql, connection))
+            {
+                mc.Parameters.AddWithValue("@client_name", record.ClientName ?? "");
+                mc.Parameters.AddWithValue("@client_surname", record.ClientSurname ?? "");
+                mc.Parameters.AddWithValue("@doctor_id", record.DoctorId);
+                mc.Parameters.AddWithValue("@user_id", record.UserId);
+                mc.Parameters.AddWithValue("@service_id", record.ServiceId);
+                mc.Parameters.AddWithValue("@total_amount", record.TotalAmount);
+                mc.Parameters.AddWithValue("@record_date", record.RecordDate);
+                
+                int result = mc.ExecuteNonQuery();
+                Console.WriteLine($"ExecuteNonQuery returned: {result}");
+            }
+
+            // Получаем ID последней вставленной записи
+            string lastIdSql = "SELECT LAST_INSERT_ID() as last_id";
+            using (var mc = new MySqlCommand(lastIdSql, connection))
+            {
+                object result = mc.ExecuteScalar();
+                Console.WriteLine($"ExecuteScalar result type: {result?.GetType()}, value: {result}");
+                
+                if (result != null)
+                {
+                    if (result is long longId)
+                    {
+                        Console.WriteLine($"Got long ID: {longId}");
+                        return (int)longId;
+                    }
+                    else if (result is int intId)
+                    {
+                        Console.WriteLine($"Got int ID: {intId}");
+                        return intId;
+                    }
+                    else if (long.TryParse(result.ToString(), out long parsedId))
+                    {
+                        Console.WriteLine($"Parsed long ID: {parsedId}");
+                        return (int)parsedId;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("ExecuteScalar returned null");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error in InsertRecord: {e.Message}");
+            Console.WriteLine($"Stack trace: {e.StackTrace}");
+        }
+        return -1;
+    }
+
     public bool Delete(int id)
     {
         string sql = @"delete from `records` where `id` = @id";

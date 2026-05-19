@@ -3,7 +3,6 @@
              x:Class="Policlinica.App"
              xmlns:local="using:Policlinica"
              RequestedThemeVariant="Default">
-            
 
     <Application.DataTemplates>
         <local:ViewLocator/>

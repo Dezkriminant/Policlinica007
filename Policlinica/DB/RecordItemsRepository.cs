@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using MySqlConnector;
@@ -48,5 +48,27 @@ public class RecordItemsRepository : BaseRep
         }
 
         return result;
+    }
+
+    public bool InsertRecordItem(RecordItem recordItem)
+    {
+        string sql = @"insert into `record_items` (record_id, service_id, service_price)
+                       values (@record_id, @service_id, @service_price)";
+        try
+        {
+            using (var mc = new MySqlCommand(sql, connection))
+            {
+                mc.Parameters.AddWithValue("@record_id", recordItem.RecordId);
+                mc.Parameters.AddWithValue("@service_id", recordItem.ServiceId);
+                mc.Parameters.AddWithValue("@service_price", recordItem.ServicePrice);
+                mc.ExecuteNonQuery();
+            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        return false;
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -88,6 +88,7 @@ public class UserRepository:BaseRep
                         Id = reader.GetInt32("id"),
                         Name = reader.GetString("name"),
                         Password = reader.GetString("password"),
+                        Login = reader.GetString("name")
                     });
                 }
             }

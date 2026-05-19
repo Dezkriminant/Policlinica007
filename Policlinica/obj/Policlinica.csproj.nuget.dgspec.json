@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\artem\\RiderProjects\\Policlinica\\Policlinica\\Policlinica.csproj": {}
+    "C:\\Users\\vikto\\RiderProjects\\Policlinica\\Policlinica\\Policlinica.csproj": {}
   },
   "projects": {
-    "C:\\Users\\artem\\RiderProjects\\Policlinica\\Policlinica\\Policlinica.csproj": {
+    "C:\\Users\\vikto\\RiderProjects\\Policlinica\\Policlinica\\Policlinica.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\artem\\RiderProjects\\Policlinica\\Policlinica\\Policlinica.csproj",
+        "projectUniqueName": "C:\\Users\\vikto\\RiderProjects\\Policlinica\\Policlinica\\Policlinica.csproj",
         "projectName": "Policlinica",
-        "projectPath": "C:\\Users\\artem\\RiderProjects\\Policlinica\\Policlinica\\Policlinica.csproj",
-        "packagesPath": "C:\\Users\\artem\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\artem\\RiderProjects\\Policlinica\\Policlinica\\obj\\",
+        "projectPath": "C:\\Users\\vikto\\RiderProjects\\Policlinica\\Policlinica\\Policlinica.csproj",
+        "packagesPath": "C:\\Users\\vikto\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\vikto\\RiderProjects\\Policlinica\\Policlinica\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\artem\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\vikto\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -38,7 +38,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "net9.0": {
@@ -94,20 +94,16 @@
           "warn": true,
           "downloadDependencies": [
             {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[9.0.15, 9.0.15]"
+              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
+              "version": "[9.0.16, 9.0.16]"
             },
             {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[9.0.15, 9.0.15]"
+              "name": "Microsoft.NETCore.App.Runtime.win-x64",
+              "version": "[9.0.16, 9.0.16]"
             },
             {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[9.0.15, 9.0.15]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[9.0.15, 9.0.15]"
+              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
+              "version": "[9.0.16, 9.0.16]"
             }
           ],
           "frameworkReferences": {
@@ -115,7 +111,12 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.202/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\vikto\\.dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
         }
       }
     }

@@ -32,13 +32,15 @@ public partial class DoctorViewModel : ViewModelBase
     public void StartTest()
     {
         
-        if (Name == null)
+        if (Name == null || Name.Trim() == "")
             return;
-        if (Surname == null)
-        return;
+        if (Surname == null || Surname.Trim() == "")
+            return;
         if (SelectedDoctor == null)
             return;
-        var vm = ActivatorUtilities.CreateInstance<ServiceViewModel>(_provider, SelectedDoctor);
+        
+        var repository = _provider.GetRequiredService<ServiceRepository>();
+        var vm = ActivatorUtilities.CreateInstance<ServiceViewModel>(_provider, SelectedDoctor, repository, Name, Surname);
         _navigation.Navigate(vm);
     }
     

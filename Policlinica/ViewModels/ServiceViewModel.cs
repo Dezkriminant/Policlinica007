@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -20,17 +20,19 @@ public partial class ServiceViewModel : ViewModelBase
     
     [ObservableProperty] string surname;
     [ObservableProperty] string name;
-    [ObservableProperty]  ObservableCollection<ServiceSelected> _services;
+    [ObservableProperty] ObservableCollection<ServiceSelected> _services;
     [ObservableProperty] string _login;
     [ObservableProperty] Doctor _selectedDoctor;
 
     public ServiceViewModel(IServiceProvider provider, Navigation navigation, Doctor selectedDoctor,
-        ServiceRepository repository)
+        ServiceRepository repository, string clientName = "", string clientSurname = "")
     {
         _provider = provider;
         _navigation = navigation;
         _selectedDoctor = selectedDoctor;
         _serviceRepository = repository;
+        name = clientName;
+        surname = clientSurname;
         Services =  new ObservableCollection<ServiceSelected>(repository.GetServicesByDoctors(selectedDoctor.Id).Select(service => new ServiceSelected(service)).ToList());
         
         //Console.WriteLine(CurrentUser.login);
@@ -38,25 +40,32 @@ public partial class ServiceViewModel : ViewModelBase
 
 
     [RelayCommand]
-
     public void Dobavlenie()
     {
+        List<Service> selectedServices = new List<Service>();
+
+        foreach (ServiceSelected s in Services)
         {
-            List<Service> services = new List<Service>();
-
-            foreach (ServiceSelected s in Services)
+            if (s.IsSelected == true)
             {
-                if (s.IsSelected == true)
-                {
-                    services.Add(s.Service);
-                }
+                selectedServices.Add(s.Service);
             }
-
-            var vm = ActivatorUtilities.CreateInstance<ServiceViewModel>(_provider, SelectedDoctor);
-            _navigation.Navigate(vm);
-         
         }
 
+        if (selectedServices.Count == 0)
+        {
+            // Можно добавить уведомление об ошибке
+            return;
         }
 
+        // Получаем репозитории для передачи в ViewModel
+        var recordRepository = _provider.GetRequiredService<RecordRep>();
+        var recordItemsRepository = _provider.GetRequiredService<RecordItemsRepository>();
+
+        // Создаем ViewModel для показа подтверждения записи
+        var vm = ActivatorUtilities.CreateInstance<RecordItemsViewModel>(_provider, 
+            _navigation, _selectedDoctor, selectedServices, recordRepository, recordItemsRepository, Name, Surname);
+        
+        _navigation.Navigate(vm);
     }
+}

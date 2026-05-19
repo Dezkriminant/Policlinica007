@@ -1,8 +1,69 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Policlinica.Views.RecordItemsView">
-   
+        xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        x:Class="Policlinica.Views.RecordItemsView"
+        x:DataType="viewModels:RecordItemsViewModel">
+    
+    <StackPanel Margin="20" Spacing="15">
+        <!-- Заголовок -->
+        <TextBlock Text="Подтверждение записи" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+        
+        <!-- Информация о клиенте -->
+        <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+            <StackPanel Spacing="10">
+                <TextBlock FontWeight="Bold" FontSize="16">Клиент:</TextBlock>
+                <TextBlock Text="{Binding ClientName}" FontSize="14"/>
+                <TextBlock Text="{Binding ClientSurname}" FontSize="14"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Информация о враче -->
+        <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+            <StackPanel Spacing="10">
+                <TextBlock FontWeight="Bold" FontSize="16">Врач:</TextBlock>
+                <TextBlock Text="{Binding SelectedDoctor.Title}" FontSize="14"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Выбранные услуги -->
+        <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+            <StackPanel Spacing="10">
+                <TextBlock FontWeight="Bold" FontSize="16">Выбранные услуги:</TextBlock>
+                
+                <ListBox ItemsSource="{Binding SelectedServices}" Height="150">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="20">
+                                <TextBlock Text="{Binding ServiceName}" Width="200"/>
+                                <TextBlock Text="{Binding Price}" Width="100"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </Border>
+
+        <!-- Итоговая сумма -->
+        <Border BorderBrush="LightBlue" BorderThickness="2" Padding="15" CornerRadius="5" Background="#F0F8FF">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="30">
+                <TextBlock Text="Итого:" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding TotalAmount}" FontSize="18" FontWeight="Bold" Foreground="Blue"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Сообщение статуса -->
+        <TextBlock Text="{Binding StatusMessage}" Foreground="Green" FontSize="14" TextWrapping="Wrap"/>
+
+        <!-- Кнопки -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20" Margin="0,20,0,0">
+            <Button Content="Сохранить запись" FontSize="16" Padding="20,10" Background="Green" Foreground="White" 
+                    Command="{Binding SaveToDatabaseCommand}"/>
+            <Button Content="Вернуться" FontSize="16" Padding="20,10" Background="Gray" Foreground="White" 
+                    Command="{Binding CancelCommand}"/>
+        </StackPanel>
+    </StackPanel>
+    
 </UserControl>

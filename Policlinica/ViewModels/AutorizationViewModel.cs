@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -35,15 +35,19 @@ public partial class AutorizationViewModel : ViewModelBase
             SpUser = repository.CheckLoginAndPassword(Login, Password);
         }
 
-        _user.Password = Password;
-        _user.Login = Login;
-
         if (SpUser.Count == 0)
         {
             Eror = "Неверный логин или пароль";
             return;
         }
-        
+
+        // Копируем все данные авторизованного пользователя в синглтон
+        _user.Id = SpUser[0].Id;
+        _user.Name = SpUser[0].Name;
+        _user.Surname = SpUser[0].Surname;
+        _user.Login = SpUser[0].Login;
+        _user.Password = SpUser[0].Password;
+
         CurrentUser.login = SpUser[0].Name;
         
         var vm = ActivatorUtilities.CreateInstance<AdminViewModel>(_provider);
