@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="800"
+        x:Class="Policlinica.Views.SugarCheckView"
+        x:DataType="viewModels:SugarCheckViewModel">
+    
+    <StackPanel Margin="30" Spacing="20">
+        <!-- Заголовок -->
+        <TextBlock Text="Быстрая проверка нормы сахара в крови" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center"/>
+        
+        <!-- Ввод веса -->
+        <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+            <StackPanel Spacing="10">
+                <TextBlock Text="Вес (кг):" FontWeight="Bold" FontSize="14"/>
+                <TextBox Name="WeightInput" Watermark="Введите вес в килограммах" Padding="10" FontSize="13"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Ввод роста -->
+        <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+            <StackPanel Spacing="10">
+                <TextBlock Text="Рост (см):" FontWeight="Bold" FontSize="14"/>
+                <TextBox Name="HeightInput" Watermark="Введите рост в сантиметрах" Padding="10" FontSize="13"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Кнопка расчета -->
+        <Button Content="Рассчитать" FontSize="16" Padding="20,12" Background="Blue" Foreground="White" 
+                HorizontalAlignment="Center" Command="{Binding CalculateCommand}"/>
+
+        <!-- Результат -->
+        <TextBlock Text="{Binding Result}" 
+                   FontSize="15" 
+                   TextWrapping="Wrap" 
+                   Foreground="Black"
+                   Padding="15"
+                   Background="WhiteSmoke"
+                   Margin="0,10,0,10"
+                   MinHeight="100"/>
+
+        <!-- Сообщение об ошибке -->
+        <TextBlock Text="{Binding StatusMessage}" Foreground="Red" FontSize="13" TextWrapping="Wrap"/>
+
+        <!-- Кнопка вернуться -->
+        <Button Content="Вернуться в меню" FontSize="16" Padding="20,12" Background="Gray" Foreground="White" 
+                HorizontalAlignment="Center" Command="{Binding BackCommand}"/>
+    </StackPanel>
+    
+</UserControl>
