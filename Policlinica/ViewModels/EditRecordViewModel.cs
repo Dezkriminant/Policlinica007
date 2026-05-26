@@ -42,34 +42,56 @@ public partial class EditRecordViewModel : ViewModelBase
     private readonly DoctorRepository _doctorRepository;
     private readonly ServiceRepository _serviceRepository;
     private readonly RecordItemsRepository _recordItemsRepository;
+    private readonly HospitalRepository _hospitalRepository;
+    private readonly AppointmentRepository _appointmentRepository;
     private Action _closeAction;
 
     [ObservableProperty] string editClientName;
     [ObservableProperty] string editClientSurname;
+    [ObservableProperty] string editPhoneNumber;
+    [ObservableProperty] ObservableCollection<Hospital> hospitalList = new();
+    [ObservableProperty] Hospital editSelectedHospital;
     [ObservableProperty] ObservableCollection<Doctor> doctorList = new();
     [ObservableProperty] Doctor editSelectedDoctor;
     [ObservableProperty] ObservableCollection<ServiceWithSelected> editServiceList = new();
+    [ObservableProperty] DateTime editRecordDate = DateTime.Now;
+    [ObservableProperty] ObservableCollection<string> availableTimes = new();
+    [ObservableProperty] string editSelectedTime = "";
     [ObservableProperty] decimal editTotalAmount = 0;
-    [ObservableProperty] string editRecordDate = "";
     [ObservableProperty] string statusMessage = "";
 
-    public EditRecordViewModel(Record record, RecordRep recordRep, DoctorRepository doctorRepository, ServiceRepository serviceRepository, RecordItemsRepository recordItemsRepository)
+    public EditRecordViewModel(Record record, RecordRep recordRep, DoctorRepository doctorRepository, 
+        ServiceRepository serviceRepository, RecordItemsRepository recordItemsRepository,
+        HospitalRepository hospitalRepository, AppointmentRepository appointmentRepository)
     {
         _record = record;
         _recordRep = recordRep;
         _doctorRepository = doctorRepository;
         _serviceRepository = serviceRepository;
         _recordItemsRepository = recordItemsRepository;
+        _hospitalRepository = hospitalRepository;
+        _appointmentRepository = appointmentRepository;
 
-        DoctorList = new ObservableCollection<Doctor>(doctorRepository.GetDoctorsByTest());
+        // Загружаем больницы
+        HospitalList = new ObservableCollection<Hospital>(hospitalRepository.GetAllHospitals());
+        
+        // Устанавливаем текущую больницу
+        if (record.HospitalId > 0)
+        {
+            EditSelectedHospital = HospitalList.FirstOrDefault(h => h.Id == record.HospitalId);
+        }
 
+        // Заполняем данные записи
         EditClientName = record.ClientName;
         EditClientSurname = record.ClientSurname;
-        EditSelectedDoctor = DoctorList.FirstOrDefault(d => d.Id == record.DoctorId);
-        EditTotalAmount = record.TotalAmount;
-        EditRecordDate = record.RecordDate.ToString("yyyy-MM-dd");
+        EditPhoneNumber = record.PhoneNumber;
+        EditRecordDate = record.RecordDate;
+        if (!string.IsNullOrEmpty(record.AppointmentTime))
+        {
+            EditSelectedTime = record.AppointmentTime;
+        }
 
-        LoadServicesForDoctor();
+        LoadAvailableTimes();
     }
 
     public void SetCloseAction(Action closeAction)
@@ -77,11 +99,21 @@ public partial class EditRecordViewModel : ViewModelBase
         _closeAction = closeAction;
     }
 
-    private void LoadServicesForDoctor()
+    partial void OnEditSelectedHospitalChanged(Hospital value)
     {
-        if (EditSelectedDoctor != null)
+        if (value != null)
         {
-            var services = _serviceRepository.GetServicesByDoctors(EditSelectedDoctor.Id);
+            var doctors = _doctorRepository.GetDoctorsByHospital(value.Id);
+            DoctorList = new ObservableCollection<Doctor>(doctors);
+            EditSelectedDoctor = DoctorList.FirstOrDefault(d => d.Id == _record.DoctorId);
+        }
+    }
+
+    partial void OnEditSelectedDoctorChanged(Doctor value)
+    {
+        if (value != null)
+        {
+            var services = _serviceRepository.GetServicesByDoctors(value.Id);
             EditServiceList.Clear();
             foreach (var service in services)
             {
@@ -95,20 +127,44 @@ public partial class EditRecordViewModel : ViewModelBase
                 serviceWithSelected.SetOnSelectionChanged(CalculateTotalAmount);
                 EditServiceList.Add(serviceWithSelected);
             }
+            LoadAvailableTimes();
         }
     }
 
-    partial void OnEditSelectedDoctorChanged(Doctor value)
+    partial void OnEditRecordDateChanged(DateTime value)
     {
-        if (value != null)
+        LoadAvailableTimes();
+    }
+
+    private void LoadAvailableTimes()
+    {
+        AvailableTimes.Clear();
+        if (EditSelectedHospital == null || EditSelectedDoctor == null)
+            return;
+
+        var occupiedTimes = _appointmentRepository.GetOccupiedTimes(EditSelectedHospital.Id, EditSelectedDoctor.Id, EditRecordDate);
+
+        var startTime = TimeSpan.Parse(EditSelectedHospital.WorkingHoursStart);
+        var endTime = TimeSpan.Parse(EditSelectedHospital.WorkingHoursEnd);
+        var now = DateTime.Now;
+
+        for (var time = startTime; time < endTime; time = time.Add(TimeSpan.FromMinutes(30)))
         {
-            LoadServicesForDoctor();
-            CalculateTotalAmount();
-        }
-        else
-        {
-            EditServiceList.Clear();
-            EditTotalAmount = 0;
+            string timeStr = time.ToString(@"hh\:mm");
+            
+            if (EditRecordDate.Date == now.Date)
+            {
+                var timeAsDateTime = DateTime.ParseExact(timeStr, "HH:mm", null);
+                if (timeAsDateTime.TimeOfDay <= now.TimeOfDay.Add(TimeSpan.FromMinutes(30)))
+                {
+                    continue;
+                }
+            }
+
+            if (!occupiedTimes.Contains(timeStr))
+            {
+                AvailableTimes.Add(timeStr);
+            }
         }
     }
 
@@ -128,9 +184,27 @@ public partial class EditRecordViewModel : ViewModelBase
             return;
         }
 
+        if (string.IsNullOrWhiteSpace(EditPhoneNumber))
+        {
+            StatusMessage = "Введите номер телефона";
+            return;
+        }
+
+        if (EditSelectedHospital == null)
+        {
+            StatusMessage = "Выберите больницу";
+            return;
+        }
+
         if (EditSelectedDoctor == null)
         {
             StatusMessage = "Выберите врача";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(EditSelectedTime))
+        {
+            StatusMessage = "Выберите время приёма";
             return;
         }
 
@@ -145,13 +219,12 @@ public partial class EditRecordViewModel : ViewModelBase
         {
             _record.ClientName = EditClientName;
             _record.ClientSurname = EditClientSurname;
+            _record.PhoneNumber = EditPhoneNumber;
             _record.DoctorId = EditSelectedDoctor.Id;
+            _record.HospitalId = EditSelectedHospital.Id;
+            _record.AppointmentTime = EditSelectedTime;
             _record.TotalAmount = EditTotalAmount;
-
-            if (DateTime.TryParse(EditRecordDate, out DateTime recordDate))
-            {
-                _record.RecordDate = recordDate;
-            }
+            _record.RecordDate = EditRecordDate;
 
             bool updated = _recordRep.UpdateRecord(_record);
             if (updated)

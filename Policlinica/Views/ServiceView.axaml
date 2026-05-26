@@ -6,42 +6,70 @@
         mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="700"
         x:Class="Policlinica.Views.ServiceView"
         x:DataType="viewModels:ServiceViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="CaretBrush" Value="Red"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+    </UserControl.Styles>
         
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="30" Spacing="20">
                 
-                <TextBlock Text="Выберите услугу" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
-                
-                <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
-                        <StackPanel Spacing="10">
-                                <TextBlock Text="Доступные услуги:" FontWeight="Bold" FontSize="14"/>
-                                <ListBox ItemsSource="{Binding Services}" MinHeight="250">
-                                        <ListBox.ItemTemplate>
-                                                <DataTemplate>
-                                                        <StackPanel Orientation="Horizontal" Spacing="20" Margin="10">
-                                                                <CheckBox IsChecked="{Binding IsSelected}"/>
-                                                                <TextBlock Text="{Binding Service.ServiceName}" Width="250" FontSize="13"/>
-                                                                <TextBlock Text="{Binding Service.Price}" Width="100" FontSize="13"/>
-                                                        </StackPanel>
-                                                </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                </ListBox>
-                        </StackPanel>
-                </Border>
-                
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
-                        <Button Content="Продолжить" 
-                                FontSize="16" 
-                                Padding="20,12" 
-                                Background="Green" 
-                                Foreground="White"
-                                Command="{Binding DobavlenieCommand}"/>
-                        <Button Content="Назад" 
-                                FontSize="16" 
-                                Padding="20,12" 
-                                Background="Gray" 
-                                Foreground="White"
-                                Command="{Binding GoBackCommand}"/>
+            <TextBlock Text="Выберите услугу и введите контактные данные" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+            
+            <!-- Номер телефона -->
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Номер телефона (максимум 12 цифр):" FontWeight="Bold" FontSize="14"/>
+                    <TextBox Text="{Binding PhoneNumber}" 
+                             Padding="10" 
+                             FontSize="13" 
+                             Watermark="Введите номер телефона"
+                             MaxLength="12"/>
                 </StackPanel>
+            </Border>
+
+            <!-- Услуги -->
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Доступные услуги:" FontWeight="Bold" FontSize="14"/>
+                    <ListBox ItemsSource="{Binding Services}" MinHeight="250">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="20" Margin="10">
+                                    <CheckBox IsChecked="{Binding IsSelected}"/>
+                                    <TextBlock Text="{Binding Service.ServiceName}" Width="250" FontSize="13" Foreground="Black"/>
+                                    <TextBlock Text="{Binding Service.Price}" Width="100" FontSize="13" Foreground="Black"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
+
+            <!-- Статус -->
+            <TextBlock Text="{Binding StatusMessage}" Foreground="Red" FontSize="14" TextWrapping="Wrap"/>
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+                <Button Content="Продолжить" 
+                        FontSize="16" 
+                        Padding="20,12" 
+                        Background="Green" 
+                        Foreground="White"
+                        Command="{Binding ContinueToDateTimeCommand}"/>
+                <Button Content="Назад" 
+                        FontSize="16" 
+                        Padding="20,12" 
+                        Background="Gray" 
+                        Foreground="White"
+                        Command="{Binding GoBackCommand}"/>
+            </StackPanel>
         </StackPanel>
+    </ScrollViewer>
         
 </UserControl>

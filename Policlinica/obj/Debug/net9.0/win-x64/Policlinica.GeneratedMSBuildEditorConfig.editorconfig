@@ -41,6 +41,9 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/BloodSugarInputView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/DateTimeView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/DoctorView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
@@ -48,6 +51,9 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/EditRecordWindow.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/HospitalView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/RecordItemsView.axaml]

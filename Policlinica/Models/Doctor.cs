@@ -1,4 +1,4 @@
-﻿namespace Policlinica.DB;
+namespace Policlinica.DB;
 
 public class Doctor
 {
@@ -6,5 +6,7 @@ public class Doctor
     
     public string Title { get; set; }
     
-    public string Description { get; set; }
+    public string Cabinet { get; set; }
+    
+    public int HospitalId { get; set; }
 }

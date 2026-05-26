@@ -93,7 +93,8 @@ public partial class AdminViewModel : ViewModelBase
         }
 
         var editWindow = new EditRecordWindow();
-        var editViewModel = ActivatorUtilities.CreateInstance<EditRecordViewModel>(_provider, SelectedRecord, _recordRep, _doctorRepository, _serviceRepository);
+        var editViewModel = ActivatorUtilities.CreateInstance<EditRecordViewModel>(_provider, SelectedRecord, _recordRep, _doctorRepository, _serviceRepository, 
+            _provider.GetRequiredService<RecordItemsRepository>(), _provider.GetRequiredService<HospitalRepository>(), _provider.GetRequiredService<AppointmentRepository>());
         editWindow.DataContext = editViewModel;
         
         editViewModel.SetCloseAction(() =>
@@ -106,7 +107,7 @@ public partial class AdminViewModel : ViewModelBase
             StatusMessage = "Запись обновлена";
         });
         
-        editWindow.Show(_parentWindow);
+        editWindow.ShowDialog(_parentWindow);
     }
 
     [RelayCommand]
@@ -144,7 +145,7 @@ public partial class AdminViewModel : ViewModelBase
     [RelayCommand]
     void GoService()
     {
-        var vm = ActivatorUtilities.CreateInstance<DoctorViewModel>(_provider);
+        var vm = ActivatorUtilities.CreateInstance<HospitalViewModel>(_provider);
         _navigation.Navigate(vm);
     }
 

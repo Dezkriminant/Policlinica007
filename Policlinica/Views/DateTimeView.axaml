@@ -1,0 +1,70 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="700"
+        x:Class="Policlinica.Views.DateTimeView"
+        x:DataType="viewModels:DateTimeViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="CaretBrush" Value="Red"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="30" Spacing="20">
+            <TextBlock Text="Выбор даты и времени приёма" FontSize="24" FontWeight="Bold" Foreground="Black"/>
+            
+            <!-- Дата -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Дата приёма:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                <CalendarDatePicker SelectedDate="{Binding SelectedDate}" 
+                                   Background="White" 
+                                   Foreground="Black"/>
+            </StackPanel>
+
+            <!-- Время -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Доступное время:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                <Border BorderBrush="LightGray" BorderThickness="1" Padding="12" CornerRadius="3" Background="White">
+                    <ListBox ItemsSource="{Binding AvailableTimes}"
+                             SelectedItem="{Binding SelectedTime}"
+                             Height="200"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Сумма -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Итого к оплате:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                <Border Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1" Padding="12" CornerRadius="3">
+                    <TextBlock Text="{Binding TotalAmount, StringFormat='Сумма: {0:F2} руб.'}" FontSize="14" FontWeight="Bold" Foreground="Black"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Статус -->
+            <TextBlock Text="{Binding StatusMessage}" Foreground="Green" FontSize="14" TextWrapping="Wrap"/>
+
+            <!-- Кнопки -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15" Margin="0,20,0,0">
+                <Button Content="Подтвердить запись" 
+                        FontSize="14" 
+                        Padding="18,12" 
+                        Background="Green" 
+                        Foreground="White"
+                        Command="{Binding ConfirmBookingCommand}"/>
+                <Button Content="← Назад" 
+                        FontSize="14" 
+                        Padding="18,12" 
+                        Background="Gray" 
+                        Foreground="White"
+                        Command="{Binding GoBackCommand}"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

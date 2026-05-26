@@ -19,7 +19,7 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="30" Spacing="20">
-            <!-- Заголовок -->
+            
             <Grid ColumnDefinitions="*,Auto">
                 <TextBlock Grid.Column="0" Text="Измерение уровня сахара в крови" FontSize="24" FontWeight="Bold" Foreground="Black"/>
                 <Button Grid.Column="1" Content="← Назад в админ панель" 
@@ -30,7 +30,7 @@
                         Command="{Binding GoBackCommand}"/>
             </Grid>
 
-            <!-- История измерений -->
+            
             <Border BorderBrush="LightGray" BorderThickness="1" Padding="0" CornerRadius="5" ClipToBounds="True">
                 <StackPanel Spacing="0">
                     <TextBlock Text="История измерений:" 
@@ -62,27 +62,27 @@
                 </StackPanel>
             </Border>
 
-            <!-- Форма добавления измерения -->
+            
             <Border BorderBrush="DodgerBlue" BorderThickness="2" Padding="20" CornerRadius="5" Background="White">
                 <StackPanel Spacing="15">
                     <TextBlock Text="Добавить новое измерение:" FontWeight="Bold" FontSize="16" Foreground="Black"/>
                     
-                    <!-- Уровень сахара -->
+                    
                     <StackPanel Spacing="8">
                         <TextBlock Text="Уровень сахара в крови (мг/дл):" FontWeight="Bold" Foreground="Black" FontSize="14"/>
                         <TextBox Text="{Binding SugarLevel}" Watermark="Введите значение" Padding="12" FontSize="14"/>
                     </StackPanel>
 
-                    <!-- Дата измерения -->
+                   
                     <StackPanel Spacing="8">
                         <TextBlock Text="Дата измерения (YYYY-MM-DD):" FontWeight="Bold" Foreground="Black" FontSize="14"/>
                         <TextBox Text="{Binding MeasurementDate}" Padding="12" FontSize="14"/>
                     </StackPanel>
 
-                    <!-- Статус сообщение -->
+                    
                     <TextBlock Text="{Binding StatusMessage}" Foreground="Green" FontSize="14" TextWrapping="Wrap"/>
 
-                    <!-- Кнопка сохранения -->
+                    
                     <Button Content="Сохранить измерение" 
                             FontSize="14" 
                             Padding="18,12" 

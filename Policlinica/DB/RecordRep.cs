@@ -18,10 +18,12 @@ public class RecordRep:BaseRep
         Dictionary<int, Record> recordsDict = new();
 
         string sql = @"select r.id, r.client_name, r.client_surname, r.doctor_id, r.user_id, r.total_amount, r.record_date,
-                              d.title, u.name, s.service_name, ri.service_id
+                              r.hospital_id, r.appointment_time, r.phone_number,
+                              d.title, u.name, s.service_name, ri.service_id, h.name as hospital_name
                        from records r
                        join doctors d on r.doctor_id = d.id 
                        join users u on r.user_id = u.id 
+                       left join hospitals h on r.hospital_id = h.id
                        left join record_items ri on r.id = ri.record_id
                        left join services s on ri.service_id = s.id
                        where r.user_id = @id
@@ -51,7 +53,11 @@ public class RecordRep:BaseRep
                                 Name = reader.GetString("name"),
                                 Title = reader.GetString("title"),
                                 ServiceName = "",
-                                Services = new List<string>()
+                                Services = new List<string>(),
+                                HospitalId = reader.IsDBNull(reader.GetOrdinal("hospital_id")) ? 0 : reader.GetInt32("hospital_id"),
+                                HospitalName = reader.IsDBNull(reader.GetOrdinal("hospital_name")) ? "" : reader.GetString("hospital_name"),
+                                AppointmentTime = reader.IsDBNull(reader.GetOrdinal("appointment_time")) ? "" : reader.GetTimeSpan("appointment_time").ToString(@"hh\:mm"),
+                                PhoneNumber = reader.IsDBNull(reader.GetOrdinal("phone_number")) ? "" : reader.GetString("phone_number")
                             };
                         }
                         
@@ -84,8 +90,8 @@ public class RecordRep:BaseRep
 
     public int InsertRecord(Record record)
     {
-        string insertSql = @"insert into `records` (client_name, client_surname, doctor_id, user_id, service_id, total_amount, record_date)
-                       values (@client_name, @client_surname, @doctor_id, @user_id, @service_id, @total_amount, @record_date)";
+        string insertSql = @"insert into `records` (client_name, client_surname, doctor_id, user_id, service_id, total_amount, record_date, hospital_id, appointment_time, phone_number)
+                       values (@client_name, @client_surname, @doctor_id, @user_id, @service_id, @total_amount, @record_date, @hospital_id, @appointment_time, @phone_number)";
         try
         {
             using (var mc = new MySqlCommand(insertSql, connection))
@@ -97,6 +103,9 @@ public class RecordRep:BaseRep
                 mc.Parameters.AddWithValue("@service_id", record.ServiceId);
                 mc.Parameters.AddWithValue("@total_amount", record.TotalAmount);
                 mc.Parameters.AddWithValue("@record_date", record.RecordDate);
+                mc.Parameters.AddWithValue("@hospital_id", record.HospitalId);
+                mc.Parameters.AddWithValue("@appointment_time", string.IsNullOrEmpty(record.AppointmentTime) ? DBNull.Value : record.AppointmentTime);
+                mc.Parameters.AddWithValue("@phone_number", record.PhoneNumber ?? "");
                 
                 mc.ExecuteNonQuery();
                 Console.WriteLine($"ExecuteNonQuery returned");

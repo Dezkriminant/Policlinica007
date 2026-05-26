@@ -6,53 +6,74 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
         x:Class="Policlinica.Views.DoctorView"
         x:DataType="vm:DoctorViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="CaretBrush" Value="Red"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+    </UserControl.Styles>
     
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="40" Spacing="20">
-        
-        <TextBlock Text="Создание записи" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
-        
-        <!-- Ввод имени клиента -->
-        <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
-            <StackPanel Spacing="10">
-                <TextBlock Text="Имя клиента:" FontWeight="Bold" FontSize="14"/>
-                <TextBox Text="{Binding Name}" Padding="10" FontSize="13" Watermark="Введите имя"/>
-            </StackPanel>
-        </Border>
-        
-        <!-- Ввод фамилии клиента -->
-        <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
-            <StackPanel Spacing="10">
-                <TextBlock Text="Фамилия клиента:" FontWeight="Bold" FontSize="14"/>
-                <TextBox Text="{Binding Surname}" Padding="10" FontSize="13" Watermark="Введите фамилию"/>
-            </StackPanel>
-        </Border>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="40" Spacing="20">
+            
+            <TextBlock Text="Создание записи" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+            
+            <!-- Ввод имени клиента -->
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Имя клиента:" FontWeight="Bold" FontSize="14"/>
+                    <TextBox Text="{Binding Name}" Padding="10" FontSize="13" Watermark="Введите имя"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Ввод фамилии клиента -->
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Фамилия клиента:" FontWeight="Bold" FontSize="14"/>
+                    <TextBox Text="{Binding Surname}" Padding="10" FontSize="13" Watermark="Введите фамилию"/>
+                </StackPanel>
+            </Border>
 
-        <!-- Выбор врача -->
-        <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
-            <StackPanel Spacing="10">
-                <TextBlock Text="Выберите врача:" FontWeight="Bold" FontSize="14"/>
-                <ComboBox ItemsSource="{Binding DoctorList}"
-                          SelectedItem="{Binding SelectedDoctor}"
-                          DisplayMemberBinding="{Binding Title}"
-                          Padding="10"
-                          FontSize="13"/>
-            </StackPanel>
-        </Border>
+            <!-- Выбор врача -->
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Выберите врача:" FontWeight="Bold" FontSize="14"/>
+                    <DataGrid ItemsSource="{Binding DoctorList}"
+                              SelectedItem="{Binding SelectedDoctor}"
+                              Width="650"
+                              Height="250"
+                              CanUserResizeColumns="True"
+                              CanUserSortColumns="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Title}" Header="Специальность" Width="250"/>
+                            <DataGridTextColumn Binding="{Binding Cabinet}" Header="Кабинет" Width="200"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
 
-        <!-- Кнопки -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
-            <Button Content="Далее" 
-                    FontSize="16" 
-                    Padding="20,12" 
-                    Background="Green" 
-                    Foreground="White"
-                    Command="{Binding StartTestCommand}"/>
-            <Button Content="Назад" 
-                    FontSize="16" 
-                    Padding="20,12" 
-                    Background="Gray" 
-                    Foreground="White"
-                    Command="{Binding GoBackCommand}"/>
+            <!-- Статус -->
+            <TextBlock Text="{Binding StatusMessage}" Foreground="Red" FontSize="14" TextWrapping="Wrap"/>
+
+            <!-- Кнопки -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+                <Button Content="Далее" 
+                        FontSize="16" 
+                        Padding="20,12" 
+                        Background="Green" 
+                        Foreground="White"
+                        Command="{Binding StartTestCommand}"/>
+                <Button Content="Назад" 
+                        FontSize="16" 
+                        Padding="20,12" 
+                        Background="Gray" 
+                        Foreground="White"
+                        Command="{Binding GoBackCommand}"/>
+            </StackPanel>
         </StackPanel>
-    </StackPanel>
+    </ScrollViewer>
 </UserControl>

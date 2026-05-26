@@ -39,5 +39,8 @@
       <Compile Update="Views\SugarCheckView.axaml.cs">
         <DependentUpon>SugarCheckView.axaml</DependentUpon>
       </Compile>
+      <Compile Update="Views\HospitalView.axaml.cs">
+        <DependentUpon>HospitalView.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>

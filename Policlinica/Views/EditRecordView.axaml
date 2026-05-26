@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="700"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="800"
         x:Class="Policlinica.Views.EditRecordView"
         x:DataType="viewModels:EditRecordViewModel">
 
@@ -14,6 +14,14 @@
             <Setter Property="CaretBrush" Value="Red"/>
             <Setter Property="BorderBrush" Value="Black"/>
             <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        <Style Selector="DataGridCell">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#2a2a2a"/>
+        </Style>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#1a1a1a"/>
         </Style>
     </UserControl.Styles>
 
@@ -31,6 +39,21 @@
             <StackPanel Spacing="8">
                 <TextBlock Text="Фамилия клиента:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
                 <TextBox Text="{Binding EditClientSurname}" Padding="12" FontSize="14"/>
+            </StackPanel>
+
+            <!-- Номер телефона -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Номер телефона (макс. 12 цифр):" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                <TextBox Text="{Binding EditPhoneNumber}" Padding="12" FontSize="14" MaxLength="12"/>
+            </StackPanel>
+
+            <!-- Больница -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Больница:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                <ComboBox ItemsSource="{Binding HospitalList}"
+                          SelectedItem="{Binding EditSelectedHospital}"
+                          DisplayMemberBinding="{Binding Name}"
+                          Padding="12" FontSize="14" Background="White" Foreground="Black"/>
             </StackPanel>
 
             <!-- Врач -->
@@ -60,6 +83,24 @@
                 </Border>
             </StackPanel>
 
+            <!-- Дата -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Дата приёма:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                <CalendarDatePicker SelectedDate="{Binding EditRecordDate}" 
+                                   Background="White" 
+                                   Foreground="Black"/>
+            </StackPanel>
+
+            <!-- Время -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Доступное время:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                <Border BorderBrush="LightGray" BorderThickness="1" Padding="12" CornerRadius="3" Background="White">
+                    <ListBox ItemsSource="{Binding AvailableTimes}"
+                             SelectedItem="{Binding EditSelectedTime}"
+                             Height="150"/>
+                </Border>
+            </StackPanel>
+
             <!-- Сумма (только для отображения) -->
             <StackPanel Spacing="8">
                 <TextBlock Text="Итого сумма:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
@@ -68,14 +109,8 @@
                 </Border>
             </StackPanel>
 
-            <!-- Дата -->
-            <StackPanel Spacing="8">
-                <TextBlock Text="Дата (YYYY-MM-DD):" FontWeight="Bold" Foreground="Black" FontSize="14"/>
-                <TextBox Text="{Binding EditRecordDate}" Padding="12" FontSize="14"/>
-            </StackPanel>
-
             <!-- Сообщение статуса -->
-            <TextBlock Text="{Binding StatusMessage}" Foreground="Green" FontSize="14" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding StatusMessage}" Foreground="Red" FontSize="14" TextWrapping="Wrap"/>
 
             <!-- Кнопки -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15" Margin="0,20,0,0">

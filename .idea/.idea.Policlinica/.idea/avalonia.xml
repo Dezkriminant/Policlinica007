@@ -13,6 +13,7 @@
         <entry key="Policlinica/Views/DoctoraWindow.axaml" value="Policlinica/Policlinica.csproj" />
         <entry key="Policlinica/Views/EditRecordView.axaml" value="Policlinica/Policlinica.csproj" />
         <entry key="Policlinica/Views/EditRecordWindow.axaml" value="Policlinica/Policlinica.csproj" />
+        <entry key="Policlinica/Views/HospitalView.axaml" value="Policlinica/Policlinica.csproj" />
         <entry key="Policlinica/Views/InfoWindow.axaml" value="Policlinica/Policlinica.csproj" />
         <entry key="Policlinica/Views/PasswordWindow.axaml" value="Policlinica/Policlinica.csproj" />
         <entry key="Policlinica/Views/RecordItemsView.axaml" value="Policlinica/Policlinica.csproj" />

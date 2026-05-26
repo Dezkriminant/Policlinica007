@@ -41,6 +41,12 @@ sealed class Program
                 s.AddTransient<BloodSugarInputView>();
                 s.AddTransient<BloodSugarInputViewModel>();
                 
+                s.AddTransient<HospitalView>();
+                s.AddTransient<HospitalViewModel>();
+                
+                s.AddTransient<DateTimeView>();
+                s.AddTransient<DateTimeViewModel>();
+                
                 s.AddTransient<RegistrationViewModel>();
                 s.AddTransient<RegistrationView>();
                 
@@ -67,6 +73,10 @@ sealed class Program
                 s.AddTransient<RecordRep>();
                 
                 s.AddTransient<BloodSugarRepository>();
+                
+                s.AddTransient<HospitalRepository>();
+                
+                s.AddTransient<AppointmentRepository>();
                 
                 s.AddSingleton<Navigation>();
 

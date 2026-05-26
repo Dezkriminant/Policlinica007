@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using MySqlConnector;
@@ -15,7 +15,7 @@ public class DoctorRepository:BaseRep
     public List<Doctor> GetDoctorsByTest()
     {
         List<Doctor> result = new List<Doctor>();
-        string sql = "select * from doctors";
+        string sql = "select id, title, cabinet, hospital_id from doctors";
         try
         {
             using (var mc = new MySqlCommand(sql, connection))
@@ -27,9 +27,41 @@ public class DoctorRepository:BaseRep
                     {
                         Id = dr.GetInt32("id"),
                         Title = dr.GetString("title"),
-                        Description = dr.GetString("description"),
-                       
+                        Cabinet = dr.IsDBNull(dr.GetOrdinal("cabinet")) ? "" : dr.GetString("cabinet"),
+                        HospitalId = dr.IsDBNull(dr.GetOrdinal("hospital_id")) ? 0 : dr.GetInt32("hospital_id")
                     });
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return result;
+    }
+
+    public List<Doctor> GetDoctorsByHospital(int hospitalId)
+    {
+        List<Doctor> result = new List<Doctor>();
+        string sql = "SELECT id, title, cabinet, hospital_id FROM doctors WHERE hospital_id = @hospitalId";
+        try
+        {
+            using (var mc = new MySqlCommand(sql, connection))
+            {
+                mc.Parameters.AddWithValue("@hospitalId", hospitalId);
+                using (var dr = mc.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        result.Add(new Doctor
+                        {
+                            Id = dr.GetInt32("id"),
+                            Title = dr.GetString("title"),
+                            Cabinet = dr.IsDBNull(dr.GetOrdinal("cabinet")) ? "" : dr.GetString("cabinet"),
+                            HospitalId = dr.GetInt32("hospital_id")
+                        });
+                    }
                 }
             }
         }
@@ -47,5 +79,3 @@ public class DoctorRepository:BaseRep
         CloseConnection();
     }
 }
-    
-    

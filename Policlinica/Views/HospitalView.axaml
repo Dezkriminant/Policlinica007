@@ -1,0 +1,67 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="700"
+        x:Class="Policlinica.Views.HospitalView"
+        x:DataType="viewModels:HospitalViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="DataGridCell">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#2a2a2a"/>
+        </Style>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#1a1a1a"/>
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="40" Spacing="20">
+            
+            <TextBlock Text="Выберите больницу" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Black"/>
+            
+            <!-- Список больниц -->
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Доступные медицинские учреждения:" FontWeight="Bold" FontSize="14" Foreground="Black"/>
+                    <DataGrid ItemsSource="{Binding HospitalList}" 
+                              SelectedItem="{Binding SelectedHospital}"
+                              Width="700"
+                              Height="250"
+                              CanUserResizeColumns="True"
+                              CanUserSortColumns="True"
+                              Background="#333333">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Название" Width="200"/>
+                            <DataGridTextColumn Binding="{Binding Address}" Header="Адрес" Width="250"/>
+                            <DataGridTextColumn Binding="{Binding WorkingHoursStart}" Header="Открытие" Width="100"/>
+                            <DataGridTextColumn Binding="{Binding WorkingHoursEnd}" Header="Закрытие" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+
+            <!-- Статус -->
+            <TextBlock Text="{Binding StatusMessage}" Foreground="Red" FontSize="14" TextWrapping="Wrap"/>
+
+            <!-- Кнопки -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+                <Button Content="Продолжить" 
+                        FontSize="16" 
+                        Padding="20,12" 
+                        Background="Green" 
+                        Foreground="White"
+                        Command="{Binding SelectHospitalCommand}"/>
+                <Button Content="Назад" 
+                        FontSize="16" 
+                        Padding="20,12" 
+                        Background="Gray" 
+                        Foreground="White"
+                        Command="{Binding GoBackCommand}"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
