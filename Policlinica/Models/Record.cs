@@ -29,6 +29,7 @@ public class Record
     
     public int HospitalId { get; set; }
     public string HospitalName { get; set; }
+    public string Cabinet { get; set; }
     public string AppointmentTime { get; set; }
     public string PhoneNumber { get; set; }
 

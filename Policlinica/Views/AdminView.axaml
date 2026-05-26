@@ -61,6 +61,7 @@
                                 <DataGridTextColumn Binding="{Binding ClientName}" Header="Имя" Width="100"/>
                                 <DataGridTextColumn Binding="{Binding ClientSurname}" Header="Фамилия" Width="100"/>
                                 <DataGridTextColumn Binding="{Binding Title}" Header="Врач" Width="120"/>
+                                <DataGridTextColumn Binding="{Binding Cabinet}" Header="Кабинет" Width="80"/>
                                 <DataGridTextColumn Binding="{Binding HospitalName}" Header="Больница" Width="120"/>
                                 <DataGridTextColumn Binding="{Binding AppointmentTime}" Header="Время" Width="80"/>
                                 <DataGridTextColumn Binding="{Binding TotalAmount}" Header="Цена" Width="80"/>

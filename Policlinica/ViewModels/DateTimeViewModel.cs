@@ -58,7 +58,6 @@ public partial class DateTimeViewModel : ViewModelBase
         AvailableTimes.Clear();
         var occupiedTimes = _appointmentRepository.GetOccupiedTimes(_selectedHospital.Id, _selectedDoctor.Id, SelectedDate);
 
-        // Генерируем все возможные слоты (каждые 30 минут)
         var startTime = TimeSpan.Parse(_selectedHospital.WorkingHoursStart);
         var endTime = TimeSpan.Parse(_selectedHospital.WorkingHoursEnd);
         var now = DateTime.Now;
@@ -67,13 +66,12 @@ public partial class DateTimeViewModel : ViewModelBase
         {
             string timeStr = time.ToString(@"hh\:mm");
             
-            // Пропускаем если время уже прошло и дата — сегодня
             if (SelectedDate.Date == now.Date)
             {
                 var timeAsDateTime = DateTime.ParseExact(timeStr, "HH:mm", null);
                 if (timeAsDateTime.TimeOfDay <= now.TimeOfDay.Add(TimeSpan.FromMinutes(30)))
                 {
-                    continue; // Пропускаем прошедшие времена
+                    continue;
                 }
             }
 
@@ -106,7 +104,8 @@ public partial class DateTimeViewModel : ViewModelBase
                 RecordDate = SelectedDate,
                 HospitalId = _selectedHospital.Id,
                 AppointmentTime = SelectedTime,
-                PhoneNumber = _phoneNumber
+                PhoneNumber = _phoneNumber,
+                Cabinet = _selectedDoctor.Cabinet
             };
 
             int recordId = _recordRep.InsertRecord(record);
@@ -116,7 +115,6 @@ public partial class DateTimeViewModel : ViewModelBase
                 return;
             }
 
-            // Сохраняем все выбранные услуги
             foreach (var service in _selectedServices)
             {
                 _recordItemsRepository.InsertRecordItem(new RecordItem
@@ -127,7 +125,6 @@ public partial class DateTimeViewModel : ViewModelBase
                 });
             }
 
-            // Бронируем слот времени
             _appointmentRepository.BookAppointment(recordId, _selectedHospital.Id, _selectedDoctor.Id, SelectedDate, TimeSpan.Parse(SelectedTime));
 
             StatusMessage = "Запись успешно создана!";

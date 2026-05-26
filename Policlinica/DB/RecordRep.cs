@@ -18,7 +18,7 @@ public class RecordRep:BaseRep
         Dictionary<int, Record> recordsDict = new();
 
         string sql = @"select r.id, r.client_name, r.client_surname, r.doctor_id, r.user_id, r.total_amount, r.record_date,
-                              r.hospital_id, r.appointment_time, r.phone_number,
+                              r.hospital_id, r.appointment_time, r.phone_number, r.cabinet,
                               d.title, u.name, s.service_name, ri.service_id, h.name as hospital_name
                        from records r
                        join doctors d on r.doctor_id = d.id 
@@ -52,6 +52,7 @@ public class RecordRep:BaseRep
                                 RecordDate = reader.GetDateTime("record_date"),
                                 Name = reader.GetString("name"),
                                 Title = reader.GetString("title"),
+                                Cabinet = reader.IsDBNull(reader.GetOrdinal("cabinet")) ? "" : reader.GetString("cabinet"),
                                 ServiceName = "",
                                 Services = new List<string>(),
                                 HospitalId = reader.IsDBNull(reader.GetOrdinal("hospital_id")) ? 0 : reader.GetInt32("hospital_id"),
@@ -61,7 +62,6 @@ public class RecordRep:BaseRep
                             };
                         }
                         
-                        // Добавляем услугу если она не null
                         if (!reader.IsDBNull(reader.GetOrdinal("service_name")))
                         {
                             string serviceName = reader.GetString("service_name");
@@ -74,7 +74,6 @@ public class RecordRep:BaseRep
                 }
             }
             
-            // Объединяем услуги в одну строку и добавляем в список
             foreach (var record in recordsDict.Values)
             {
                 record.ServiceName = string.Join(", ", record.Services);
@@ -90,8 +89,8 @@ public class RecordRep:BaseRep
 
     public int InsertRecord(Record record)
     {
-        string insertSql = @"insert into `records` (client_name, client_surname, doctor_id, user_id, service_id, total_amount, record_date, hospital_id, appointment_time, phone_number)
-                       values (@client_name, @client_surname, @doctor_id, @user_id, @service_id, @total_amount, @record_date, @hospital_id, @appointment_time, @phone_number)";
+        string insertSql = @"insert into `records` (client_name, client_surname, doctor_id, user_id, service_id, total_amount, record_date, hospital_id, appointment_time, phone_number, cabinet)
+                       values (@client_name, @client_surname, @doctor_id, @user_id, @service_id, @total_amount, @record_date, @hospital_id, @appointment_time, @phone_number, @cabinet)";
         try
         {
             using (var mc = new MySqlCommand(insertSql, connection))
@@ -106,6 +105,7 @@ public class RecordRep:BaseRep
                 mc.Parameters.AddWithValue("@hospital_id", record.HospitalId);
                 mc.Parameters.AddWithValue("@appointment_time", string.IsNullOrEmpty(record.AppointmentTime) ? DBNull.Value : record.AppointmentTime);
                 mc.Parameters.AddWithValue("@phone_number", record.PhoneNumber ?? "");
+                mc.Parameters.AddWithValue("@cabinet", record.Cabinet ?? "");
                 
                 mc.ExecuteNonQuery();
                 Console.WriteLine($"ExecuteNonQuery returned");
@@ -156,7 +156,8 @@ public class RecordRep:BaseRep
                            client_surname = @client_surname, 
                            doctor_id = @doctor_id, 
                            total_amount = @total_amount, 
-                           record_date = @record_date
+                           record_date = @record_date,
+                           cabinet = @cabinet
                        where id = @id";
         try
         {
@@ -168,6 +169,7 @@ public class RecordRep:BaseRep
                 mc.Parameters.AddWithValue("@doctor_id", record.DoctorId);
                 mc.Parameters.AddWithValue("@total_amount", record.TotalAmount);
                 mc.Parameters.AddWithValue("@record_date", record.RecordDate);
+                mc.Parameters.AddWithValue("@cabinet", record.Cabinet ?? "");
                 
                 int rows = mc.ExecuteNonQuery();
                 Console.WriteLine($"Updated {rows} rows");
