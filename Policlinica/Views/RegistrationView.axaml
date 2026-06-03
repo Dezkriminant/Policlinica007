@@ -5,48 +5,55 @@
         xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
         mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="500"
         x:Class="Policlinica.Views.RegistrationView"
-        x:DataType="viewModels:RegistrationViewModel">
+        x:DataType="viewModels:RegistrationViewModel"
+        Background="Black">
 
     <UserControl.Styles>
         <Style Selector="TextBox">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="CaretBrush" Value="Red"/>
-            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderBrush" Value="White"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="10"/>
             <Setter Property="FontSize" Value="14"/>
         </Style>
+        <Style Selector="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
     </UserControl.Styles>
   
-    <Border BorderBrush="DodgerBlue" CornerRadius="8" BorderThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" Padding="30" Background="White">
+    <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" Padding="30" Background="Black">
         <StackPanel Spacing="15" Width="400">
-            <TextBlock Text="Регистрация" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Black"/>
+            <TextBlock Text="Регистрация" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
             
-            <StackPanel Spacing="8">
-                <TextBlock Text="Логин (макс. 15 символов):" FontWeight="Bold" Foreground="Black"/>
-                <TextBox Watermark="Придумайте имя" Text="{Binding Login}" MaxLength="15"/>
-            </StackPanel>
+            <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Логин (макс. 15 символов):" FontWeight="Bold" Foreground="White"/>
+                    <TextBox Watermark="Придумайте имя" Text="{Binding Login}" MaxLength="15"/>
+                </StackPanel>
+            </Border>
             
-            <StackPanel Spacing="8">
-                <TextBlock Text="Пароль (макс. 8 символов):" FontWeight="Bold" Foreground="Black"/>
-                <TextBox Watermark="Придумайте пароль" Text="{Binding Password}" MaxLength="8"/>
-            </StackPanel>
+            <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Пароль (макс. 8 символов):" FontWeight="Bold" Foreground="White"/>
+                    <TextBox Watermark="Придумайте пароль" Text="{Binding Password}" MaxLength="8"/>
+                </StackPanel>
+            </Border>
             
-            <TextBlock Text="{Binding Eror}" Foreground="Red" FontSize="12" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding Eror}" Foreground="Yellow" FontSize="12" TextWrapping="Wrap" MinHeight="20"/>
             
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15" Margin="0,15,0,0">
-                <Button Content="Зарегистрироваться" 
-                        FontSize="14" 
-                        Padding="15,10" 
-                        FontWeight="Bold"
-                        Foreground="White"
+                <Button Content="✓ Зарегистрироваться" 
                         Background="LimeGreen"
                         Command="{Binding RegistrationCommand}"/>
-                <HyperlinkButton Content="Авторизоваться" 
-                                 FontSize="14"
-                                 Foreground="Blue"
-                                 Command="{Binding OpenAutorizationCommand}"/>
+                <Button Content="↶ Авторизоваться" 
+                        Background="DodgerBlue"
+                        Command="{Binding OpenAutorizationCommand}"/>
             </StackPanel>
        </StackPanel>
     </Border>

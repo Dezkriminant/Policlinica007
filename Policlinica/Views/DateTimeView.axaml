@@ -3,66 +3,85 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="700"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
         x:Class="Policlinica.Views.DateTimeView"
-        x:DataType="viewModels:DateTimeViewModel">
+        x:DataType="viewModels:DateTimeViewModel"
+        Background="Black">
 
     <UserControl.Styles>
         <Style Selector="TextBox">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="CaretBrush" Value="Red"/>
-            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderBrush" Value="White"/>
             <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="CalendarDatePicker">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        <Style Selector="ListBox">
+            <Setter Property="Background" Value="#333333"/>
+            <Setter Property="Foreground" Value="White"/>
         </Style>
     </UserControl.Styles>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="30" Spacing="20">
-            <TextBlock Text="Выбор даты и времени приёма" FontSize="24" FontWeight="Bold" Foreground="Black"/>
+        <StackPanel Margin="40" Spacing="20">
+            <TextBlock Text="Выбор даты и времени приёма" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
             
             <!-- Дата -->
-            <StackPanel Spacing="8">
-                <TextBlock Text="Дата приёма:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
-                <CalendarDatePicker SelectedDate="{Binding SelectedDate}" 
-                                   Background="White" 
-                                   Foreground="Black"/>
-            </StackPanel>
+            <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Дата приёма:" FontWeight="Bold" Foreground="White" FontSize="14"/>
+                    <CalendarDatePicker SelectedDate="{Binding SelectedDate}" 
+                                       Background="White" 
+                                       Foreground="Black"
+                                       Height="40"/>
+                </StackPanel>
+            </Border>
 
             <!-- Время -->
-            <StackPanel Spacing="8">
-                <TextBlock Text="Доступное время:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
-                <Border BorderBrush="LightGray" BorderThickness="1" Padding="12" CornerRadius="3" Background="White">
+            <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Доступное время:" FontWeight="Bold" Foreground="White" FontSize="14"/>
                     <ListBox ItemsSource="{Binding AvailableTimes}"
                              SelectedItem="{Binding SelectedTime}"
-                             Height="200"/>
-                </Border>
-            </StackPanel>
+                             Height="220"/>
+                </StackPanel>
+            </Border>
 
             <!-- Сумма -->
-            <StackPanel Spacing="8">
-                <TextBlock Text="Итого к оплате:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
-                <Border Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1" Padding="12" CornerRadius="3">
-                    <TextBlock Text="{Binding TotalAmount, StringFormat='Сумма: {0:F2} руб.'}" FontSize="14" FontWeight="Bold" Foreground="Black"/>
-                </Border>
-            </StackPanel>
+            <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Итого к оплате:" FontWeight="Bold" Foreground="White" FontSize="14"/>
+                    <TextBlock Text="{Binding TotalAmount, StringFormat='Сумма: {0:F2} руб.'}" 
+                               FontSize="16" 
+                               FontWeight="Bold" 
+                               Foreground="LimeGreen"
+                               Padding="10"/>
+                </StackPanel>
+            </Border>
 
             <!-- Статус -->
-            <TextBlock Text="{Binding StatusMessage}" Foreground="Green" FontSize="14" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding StatusMessage}" Foreground="Yellow" FontSize="14" TextWrapping="Wrap" MinHeight="20"/>
 
             <!-- Кнопки -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15" Margin="0,20,0,0">
-                <Button Content="Подтвердить запись" 
-                        FontSize="14" 
-                        Padding="18,12" 
-                        Background="Green" 
-                        Foreground="White"
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20" Margin="0,20,0,0">
+                <Button Content="✓ Подтвердить запись" 
+                        Background="LimeGreen"
                         Command="{Binding ConfirmBookingCommand}"/>
-                <Button Content="← Назад" 
-                        FontSize="14" 
-                        Padding="18,12" 
-                        Background="Gray" 
-                        Foreground="White"
+                <Button Content="↶ Назад" 
+                        Background="Gray"
                         Command="{Binding GoBackCommand}"/>
             </StackPanel>
         </StackPanel>

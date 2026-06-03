@@ -1,0 +1,107 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="700"
+        x:Class="Policlinica.Views.AddPatientView"
+        x:DataType="viewModels:AddPatientViewModel"
+        Title="Добавление клиента"
+        WindowStartupLocation="CenterOwner"
+        Width="500"
+        Height="700"
+        CanResize="False"
+        Background="Black">
+
+    <Window.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="CaretBrush" Value="Red"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Styles>
+
+    <Border Padding="30" Background="Black">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="15" VerticalAlignment="Top">
+                <TextBlock Text="Добавление клиента" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
+                
+                <!-- Имя клиента -->
+                <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Имя: *" FontWeight="Bold" FontSize="14" Foreground="White"/>
+                        <TextBox Text="{Binding Name}" Watermark="Введите имя" MaxLength="100"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Фамилия клиента -->
+                <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Фамилия: *" FontWeight="Bold" FontSize="14" Foreground="White"/>
+                        <TextBox Text="{Binding Surname}" Watermark="Введите фамилию" MaxLength="100"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Номер телефона -->
+                <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Номер телефона: *" FontWeight="Bold" FontSize="14" Foreground="White"/>
+                        <TextBox Text="{Binding PhoneNumber}" Watermark="Введите номер телефона" MaxLength="20"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Серия паспорта -->
+                <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Серия паспорта: *" FontWeight="Bold" FontSize="14" Foreground="White"/>
+                        <TextBox Text="{Binding PassportSeries}" Watermark="Введите серию" MaxLength="10"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Номер паспорта -->
+                <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Номер паспорта: *" FontWeight="Bold" FontSize="14" Foreground="White"/>
+                        <TextBox Text="{Binding PassportNumber}" Watermark="Введите номер" MaxLength="50"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Сообщение об ошибке/успехе -->
+                <TextBlock Text="{Binding ErrorMessage}" 
+                           Foreground="Yellow"
+                           FontSize="13" 
+                           TextWrapping="Wrap"
+                           FontWeight="Bold"
+                           MinHeight="40"/>
+
+                <!-- Кнопки действия -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20" Margin="0,10,0,0">
+                    <Button Content="✓ Сохранить" 
+                            Background="LimeGreen"
+                            Click="AddButton_Click"
+                            Width="140"
+                            Height="45"/>
+                    <Button Content="✕ Отмена" 
+                            Background="Crimson"
+                            Click="CancelButton_Click"
+                            Width="140"
+                            Height="45"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</Window>

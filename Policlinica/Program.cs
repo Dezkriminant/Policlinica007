@@ -47,6 +47,9 @@ sealed class Program
                 s.AddTransient<DateTimeView>();
                 s.AddTransient<DateTimeViewModel>();
                 
+                s.AddTransient<PatientListView>();
+                s.AddTransient<PatientListViewModel>();
+                
                 s.AddTransient<RegistrationViewModel>();
                 s.AddTransient<RegistrationView>();
                 
@@ -63,6 +66,18 @@ sealed class Program
                  s.AddTransient<DoctorViewModel>();
                  
                  s.AddTransient<RecordItemsView>();
+                 
+                 s.AddTransient<PatientSelectionView>();
+                 s.AddTransient<PatientSelectionViewModel>();
+                 
+                 s.AddTransient<AddPatientView>();
+                 s.AddTransient<AddPatientViewModel>();
+                 
+                 s.AddTransient<DoctorSelectionView>();
+                 s.AddTransient<DoctorSelectionViewModel>();
+                 
+                 s.AddTransient<PatientManagementView>();
+                 s.AddTransient<PatientManagementViewModel>();
                
                 s.AddTransient<DoctorRepository>();
                 
@@ -77,6 +92,8 @@ sealed class Program
                 s.AddTransient<HospitalRepository>();
                 
                 s.AddTransient<AppointmentRepository>();
+                
+                s.AddTransient<PatientRepository>();
                 
                 s.AddSingleton<Navigation>();
 

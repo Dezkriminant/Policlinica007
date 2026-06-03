@@ -29,22 +29,28 @@
         <StackPanel Spacing="20" Margin="20">
             <TextBlock Text="Редактирование записи:" FontWeight="Bold" FontSize="16" Foreground="Black"/>
             
-            <!-- Имя клиента -->
+            <!-- Имя клиента (read-only) -->
             <StackPanel Spacing="8">
                 <TextBlock Text="Имя клиента:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
-                <TextBox Text="{Binding EditClientName}" Padding="12" FontSize="14"/>
+                <Border Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1" Padding="12" CornerRadius="3">
+                    <TextBlock Text="{Binding EditClientName}" FontSize="14" Foreground="Black"/>
+                </Border>
             </StackPanel>
 
-            <!-- Фамилия клиента -->
+            <!-- Фамилия клиента (read-only) -->
             <StackPanel Spacing="8">
                 <TextBlock Text="Фамилия клиента:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
-                <TextBox Text="{Binding EditClientSurname}" Padding="12" FontSize="14"/>
+                <Border Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1" Padding="12" CornerRadius="3">
+                    <TextBlock Text="{Binding EditClientSurname}" FontSize="14" Foreground="Black"/>
+                </Border>
             </StackPanel>
 
-            <!-- Номер телефона -->
+            <!-- Номер телефона (read-only) -->
             <StackPanel Spacing="8">
-                <TextBlock Text="Номер телефона (макс. 12 цифр):" FontWeight="Bold" Foreground="Black" FontSize="14"/>
-                <TextBox Text="{Binding EditPhoneNumber}" Padding="12" FontSize="14" MaxLength="12"/>
+                <TextBlock Text="Номер телефона:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                <Border Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1" Padding="12" CornerRadius="3">
+                    <TextBlock Text="{Binding EditPhoneNumber}" FontSize="14" Foreground="Black"/>
+                </Border>
             </StackPanel>
 
             <!-- Больница -->

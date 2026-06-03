@@ -5,70 +5,79 @@
         xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
         mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
         x:Class="Policlinica.Views.AdminView"
-        x:DataType="viewModels:AdminViewModel">
+        x:DataType="viewModels:AdminViewModel"
+        Background="Black">
 
     <UserControl.Styles>
         <Style Selector="TextBox">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="CaretBrush" Value="Red"/>
-            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderBrush" Value="White"/>
             <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="DataGrid">
+            <Setter Property="IsReadOnly" Value="True"/>
+        </Style>
+        <Style Selector="DataGridCell">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#2a2a2a"/>
+        </Style>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#1a1a1a"/>
         </Style>
     </UserControl.Styles>
     
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="30" Spacing="20">
-            <!-- Заголовок с поиском и кнопкой выхода -->
-            <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,0,0,10" VerticalAlignment="Center">
-                <TextBlock Grid.Column="0" Text="Управление записями" FontSize="24" FontWeight="Bold" Foreground="Black" VerticalAlignment="Center"/>
-                
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
-                    <TextBox Text="{Binding SearchText}" 
-                             Watermark="Поиск по имени/фамилии" 
-                             Width="200" 
-                             Padding="10" 
-                             FontSize="13"/>
-                    <Button Content="Искать" 
-                            FontSize="14" 
-                            Padding="15,8" 
-                            Background="Blue" 
-                            Foreground="White"
-                            Command="{Binding SearchRecordsCommand}"/>
-                </StackPanel>
-                
-                <Button Grid.Column="2" Content="Выход" 
-                        FontSize="14" 
-                        Padding="15,8" 
-                        Background="Red" 
-                        Foreground="White"
-                        Command="{Binding ExitApplicationCommand}"/>
-            </Grid>
+        <StackPanel Margin="40" Spacing="20">
+            <!-- Заголовок -->
+            <TextBlock Text="Управление записями" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
             
-            <!-- Таблица записей с ползунком -->
-            <Border BorderBrush="LightGray" BorderThickness="1" Padding="0" CornerRadius="5" ClipToBounds="True">
-                <StackPanel Spacing="0">
-                    <TextBlock Text="Список записей (кликните для редактирования):" 
-                               FontWeight="Bold" FontSize="16" Foreground="Black" Padding="15,15,15,10"/>
-                    <ScrollViewer MaxHeight="300" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                        <DataGrid ItemsSource="{Binding RecordsList }" 
-                                  SelectedItem="{Binding SelectedRecord }"
-                                  Width="1350"
+            <!-- Поиск -->
+            <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Поиск записи:" FontWeight="Bold" FontSize="14" Foreground="White"/>
+                    <TextBox Text="{Binding SearchText}" 
+                             Watermark="Поиск по имени/фамилии (ищет при вводе)" 
+                             Width="500"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Таблица записей -->
+            <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Список всех записей:" 
+                               FontWeight="Bold" FontSize="14" Foreground="White"/>
+                    <ScrollViewer MaxHeight="350" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                        <DataGrid ItemsSource="{Binding RecordsList}" 
+                                  SelectedItem="{Binding SelectedRecord}"
                                   CanUserResizeColumns="True"
-                                  CanUserSortColumns="True">
+                                  CanUserReorderColumns="False"
+                                  CanUserSortColumns="True"
+                                  IsReadOnly="True"
+                                  Background="#333333">
                             <DataGrid.Columns>
-                                <DataGridCheckBoxColumn IsVisible="True"/>
-                                <DataGridTextColumn Binding="{Binding ClientName}" Header="Имя" Width="100"/>
-                                <DataGridTextColumn Binding="{Binding ClientSurname}" Header="Фамилия" Width="100"/>
-                                <DataGridTextColumn Binding="{Binding Title}" Header="Врач" Width="120"/>
-                                <DataGridTextColumn Binding="{Binding Cabinet}" Header="Кабинет" Width="80"/>
-                                <DataGridTextColumn Binding="{Binding HospitalName}" Header="Больница" Width="120"/>
-                                <DataGridTextColumn Binding="{Binding AppointmentTime}" Header="Время" Width="80"/>
-                                <DataGridTextColumn Binding="{Binding TotalAmount}" Header="Цена" Width="80"/>
-                                <DataGridTextColumn Binding="{Binding ServiceName}" Header="Услуги" Width="250"/>
-                                <DataGridTextColumn Binding="{Binding PhoneNumber}" Header="Телефон" Width="120"/>
-                                <DataGridTextColumn Binding="{Binding Status}" Header="Статус" Width="100"/>
-                                <DataGridTextColumn Binding="{Binding RecordDate, StringFormat='yyyy-MM-dd'}" Header="Дата записи" Width="130"/>
+                                <DataGridTextColumn Binding="{Binding ClientName}" Header="Имя" Width="80"/>
+                                <DataGridTextColumn Binding="{Binding ClientSurname}" Header="Фамилия" Width="80"/>
+                                <DataGridTextColumn Binding="{Binding Title}" Header="Врач" Width="90"/>
+                                <DataGridTextColumn Binding="{Binding Cabinet}" Header="Кабинет" Width="60"/>
+                                <DataGridTextColumn Binding="{Binding HospitalName}" Header="Больница" Width="90"/>
+                                <DataGridTextColumn Binding="{Binding AppointmentTime}" Header="Время" Width="60"/>
+                                <DataGridTextColumn Binding="{Binding TotalAmount}" Header="Цена" Width="60"/>
+                                <DataGridTextColumn Binding="{Binding ServiceName}" Header="Услуги" Width="150"/>
+                                <DataGridTextColumn Binding="{Binding PhoneNumber}" Header="Телефон" Width="100"/>
+                                <DataGridTextColumn Binding="{Binding RecordDate, StringFormat='yyyy-MM-dd'}" Header="Дата" Width="90"/>
+                                <DataGridTextColumn Binding="{Binding Status}" Header="Статус" Width="90"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </ScrollViewer>
@@ -76,40 +85,27 @@
             </Border>
 
             <!-- Сообщение статуса -->
-            <TextBlock Text="{Binding StatusMessage}" Foreground="Green" FontSize="14" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding StatusMessage}" Foreground="Yellow" FontSize="14" TextWrapping="Wrap" MinHeight="20"/>
            
             <!-- Кнопки -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15" Margin="0,10,0,0">
-                <Button Content="Редактировать запись" 
-                        FontSize="14" 
-                        Padding="15,10" 
-                        Background="Blue" 
-                        Foreground="White" 
-                        Command="{Binding EditRecordCommand}"/>
-                <Button Content="Удалить запись" 
-                        FontSize="14" 
-                        Padding="15,10" 
-                        Background="Red" 
-                        Foreground="White" 
-                        Command="{Binding DeleteRecordCommand}"/>
-                <Button Content="Добавить запись" 
-                        FontSize="14" 
-                        Padding="15,10" 
-                        Background="Green" 
-                        Foreground="White" 
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,10,0,0">
+                <Button Content="✏️ Редактировать" 
+                        Background="DodgerBlue"
+                        Command="{Binding EditRecordCommand}"
+                        IsEnabled="{Binding SelectedRecord, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                <Button Content="🗑️ Удалить" 
+                        Background="Crimson"
+                        Command="{Binding DeleteRecordCommand}"
+                        IsEnabled="{Binding SelectedRecord, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                <Button Content="➕ Добавить запись" 
+                        Background="LimeGreen"
                         Command="{Binding GoServiceCommand}"/>
-                <Button Content="Проверка сахара" 
-                        FontSize="14" 
-                        Padding="15,10" 
-                        Background="Orange" 
-                        Foreground="White" 
-                        Command="{Binding GoSugarCheckCommand}"/>
-                <Button Content="Измерение сахара" 
-                        FontSize="14" 
-                        Padding="15,10" 
-                        Background="Purple" 
-                        Foreground="White" 
-                        Command="{Binding GoBloodSugarInputCommand}"/>
+                <Button Content="👥 Управление пациентами" 
+                        Background="MediumPurple"
+                        Command="{Binding GoPatientManagementCommand}"/>
+                <Button Content="🚪 Выход" 
+                        Background="Red"
+                        Command="{Binding ExitApplicationCommand}"/>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

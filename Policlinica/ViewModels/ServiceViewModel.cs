@@ -18,8 +18,10 @@ public partial class ServiceViewModel : ViewModelBase
     private readonly Hospital _selectedHospital;
     private readonly string _clientName;
     private readonly string _clientSurname;
+    private int _patientId;
+    private Patient _selectedPatient;
 
-    [ObservableProperty] string phoneNumber = "";
+    [ObservableProperty] string patientPhone = "";
     [ObservableProperty] ObservableCollection<ServiceSelected> services;
     [ObservableProperty] string statusMessage = "";
 
@@ -32,6 +34,8 @@ public partial class ServiceViewModel : ViewModelBase
         _serviceRepository = repository;
         _clientName = clientName;
         _clientSurname = clientSurname;
+        _patientId = 0;
+        PatientPhone = "";
         
         Services = new ObservableCollection<ServiceSelected>(
             repository.GetServicesByDoctors(selectedDoctor.Id).Select(service => new ServiceSelected(service)).ToList());
@@ -47,20 +51,35 @@ public partial class ServiceViewModel : ViewModelBase
         _serviceRepository = repository;
         _clientName = clientName;
         _clientSurname = clientSurname;
+        _patientId = 0;
+        PatientPhone = "";
         
-        Services = new ObservableCollection<ServiceSelected>(
-            repository.GetServicesByDoctors(selectedDoctor.Id).Select(service => new ServiceSelected(service)).ToList());
+        // Очистить чекбоксы услуг
+        var servicesList = repository.GetServicesByDoctors(selectedDoctor.Id).Select(service => new ServiceSelected(service)).ToList();
+        Services = new ObservableCollection<ServiceSelected>(servicesList);
+    }
+
+    public void SetPatient(Patient patient)
+    {
+        _selectedPatient = patient;
+        _patientId = patient.Id;
+        PatientPhone = patient.PhoneNumber;
+        Console.WriteLine($"[ServiceViewModel] Установлен пациент: {patient.Surname} {patient.Name}, телефон: {PatientPhone}");
+    }
+
+    public void ResetServices()
+    {
+        // Очистить все выбранные услуги
+        foreach (var service in Services)
+        {
+            service.IsSelected = false;
+        }
+        StatusMessage = "";
     }
 
     [RelayCommand]
     public void ContinueToDateTime()
     {
-        if (string.IsNullOrWhiteSpace(PhoneNumber))
-        {
-            StatusMessage = "Введите номер телефона";
-            return;
-        }
-
         var selectedServices = Services
             .Where(s => s.IsSelected)
             .Select(s => s.Service)
@@ -79,7 +98,7 @@ public partial class ServiceViewModel : ViewModelBase
         }
 
         var vm = ActivatorUtilities.CreateInstance<DateTimeViewModel>(_provider, 
-            _selectedDoctor, _selectedHospital, selectedServices, _clientName, _clientSurname, PhoneNumber);
+            _selectedDoctor, _selectedHospital, selectedServices, _clientName, _clientSurname, PatientPhone);
         
         _navigation.Navigate(vm);
     }
@@ -87,17 +106,6 @@ public partial class ServiceViewModel : ViewModelBase
     [RelayCommand]
     public void GoBack()
     {
-        // Если выбрана больница, вернуться в DoctorView для этой больницы
-        if (_selectedHospital != null)
-        {
-            var vm = ActivatorUtilities.CreateInstance<DoctorViewModel>(_provider, _selectedHospital);
-            _navigation.Navigate(vm);
-        }
-        else
-        {
-            // Иначе вернуться в HospitalView
-            var vm = ActivatorUtilities.CreateInstance<HospitalViewModel>(_provider);
-            _navigation.Navigate(vm);
-        }
+        _navigation.GoBack();
     }
 }

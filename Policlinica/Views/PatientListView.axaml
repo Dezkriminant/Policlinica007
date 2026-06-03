@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="800"
+        x:Class="Policlinica.Views.PatientListView"
+        x:DataType="viewModels:PatientListViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="CaretBrush" Value="Red"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="DataGrid">
+            <Setter Property="IsReadOnly" Value="True"/>
+        </Style>
+        <Style Selector="DataGridCell">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#2a2a2a"/>
+        </Style>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#1a1a1a"/>
+        </Style>
+    </UserControl.Styles>
+
+    <DockPanel LastChildFill="True">
+        <!-- Кнопки внизу -->
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15" Margin="0,20,0,20">
+            <Button Content="✓ Выбрать пациента" 
+                    Background="LimeGreen"
+                    Command="{Binding SelectPatientCommand}"
+                    IsEnabled="{Binding SelectedPatient, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+            <Button Content="↶ Назад" 
+                    Background="Gray"
+                    Click="BackButton_Click"/>
+        </StackPanel>
+
+        <!-- Основное содержимое -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="20" Margin="20">
+                <TextBlock Text="Выберите пациента" FontSize="20" FontWeight="Bold" Foreground="Black"/>
+                
+                <!-- Поиск с кнопкой -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Поиск пациента:" FontWeight="Bold" Foreground="Black"/>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBox Text="{Binding SearchText}" Watermark="Введите для поиска..." Padding="12" FontSize="13" Width="450"/>
+                        <Button Content="🔍 Поиск" 
+                                Background="DodgerBlue"
+                                Click="SearchButton_Click"
+                                Width="120"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Список пациентов (read-only) -->
+                <Border BorderBrush="LightGray" BorderThickness="1" Padding="0" CornerRadius="5" ClipToBounds="True">
+                    <StackPanel Spacing="0">
+                        <TextBlock Text="Список пациентов:" FontWeight="Bold" FontSize="14" Foreground="Black" Padding="15,15,15,10"/>
+                        <ScrollViewer MaxHeight="300" VerticalScrollBarVisibility="Auto">
+                            <DataGrid ItemsSource="{Binding PatientList}"
+                                      SelectedItem="{Binding SelectedPatient}"
+                                      Width="650"
+                                      CanUserResizeColumns="False"
+                                      CanUserReorderColumns="False"
+                                      CanUserSortColumns="True"
+                                      IsReadOnly="True"
+                                      Background="#333333">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Surname}" Header="Фамилия" Width="*"/>
+                                    <DataGridTextColumn Binding="{Binding Name}" Header="Имя" Width="*"/>
+                                    <DataGridTextColumn Binding="{Binding PhoneNumber}" Header="Телефон" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+
+                <!-- Статус -->
+                <TextBlock Text="{Binding StatusMessage}" Foreground="Red" FontSize="13" TextWrapping="Wrap"/>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

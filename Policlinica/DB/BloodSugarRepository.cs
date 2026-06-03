@@ -21,7 +21,7 @@ public class BloodSugarRepository
         using (var connection = new MySqlConnection(_connection.ConnectionString))
         {
             connection.Open();
-            string query = "SELECT id, record_id, sugar_level, measurement_date FROM blood_sugar WHERE record_id = @recordId ORDER BY measurement_date DESC";
+            string query = "SELECT id, patient_id, sugar_level, measurement_date FROM blood_sugar WHERE patient_id IN (SELECT patient_id FROM records WHERE id = @recordId) ORDER BY measurement_date DESC";
             
             using (var command = new MySqlCommand(query, connection))
             {
@@ -34,7 +34,7 @@ public class BloodSugarRepository
                         records.Add(new BloodSugarRecord
                         {
                             Id = reader.GetInt32("id"),
-                            RecordId = reader.GetInt32("record_id"),
+                            RecordId = reader.GetInt32("patient_id"),
                             SugarLevel = reader.GetDecimal("sugar_level"),
                             MeasurementDate = reader.GetDateTime("measurement_date")
                         });
@@ -46,16 +46,49 @@ public class BloodSugarRepository
         return records;
     }
 
-    public bool InsertBloodSugar(int recordId, decimal sugarLevel, DateTime measurementDate)
+    // Новый метод для загрузки по patient_id (когда добавляем измерение прямо от пациента)
+    public List<BloodSugarRecord> GetBloodSugarByPatientId(int patientId)
+    {
+        var records = new List<BloodSugarRecord>();
+        
+        using (var connection = new MySqlConnection(_connection.ConnectionString))
+        {
+            connection.Open();
+            string query = "SELECT id, patient_id, sugar_level, measurement_date FROM blood_sugar WHERE patient_id = @patientId ORDER BY measurement_date DESC";
+            
+            using (var command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@patientId", patientId);
+                
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        records.Add(new BloodSugarRecord
+                        {
+                            Id = reader.GetInt32("id"),
+                            RecordId = reader.GetInt32("patient_id"),
+                            SugarLevel = reader.GetDecimal("sugar_level"),
+                            MeasurementDate = reader.GetDateTime("measurement_date")
+                        });
+                    }
+                }
+            }
+        }
+        
+        return records;
+    }
+
+    public bool InsertBloodSugar(int patientId, decimal sugarLevel, DateTime measurementDate)
     {
         using (var connection = new MySqlConnection(_connection.ConnectionString))
         {
             connection.Open();
-            string query = "INSERT INTO blood_sugar (record_id, sugar_level, measurement_date) VALUES (@recordId, @sugarLevel, @measurementDate)";
+            string query = "INSERT INTO blood_sugar (patient_id, sugar_level, measurement_date) VALUES (@patientId, @sugarLevel, @measurementDate)";
             
             using (var command = new MySqlCommand(query, connection))
             {
-                command.Parameters.AddWithValue("@recordId", recordId);
+                command.Parameters.AddWithValue("@patientId", patientId);
                 command.Parameters.AddWithValue("@sugarLevel", sugarLevel);
                 command.Parameters.AddWithValue("@measurementDate", measurementDate);
                 

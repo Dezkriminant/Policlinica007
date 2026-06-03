@@ -141,9 +141,6 @@ public partial class DateTimeViewModel : ViewModelBase
     [RelayCommand]
     void GoBack()
     {
-        var serviceRepository = _provider.GetRequiredService<ServiceRepository>();
-        var vm = ActivatorUtilities.CreateInstance<ServiceViewModel>(_provider, _navigation, _selectedDoctor, 
-            _selectedHospital, serviceRepository, _clientName, _clientSurname);
-        _navigation.Navigate(vm);
+        _navigation.GoBack();
     }
 }

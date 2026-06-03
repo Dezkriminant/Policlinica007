@@ -13,8 +13,9 @@ public partial class DoctorViewModel : ViewModelBase
 {
     private readonly IServiceProvider _provider;
     private readonly Navigation _navigation;
-    private Hospital _hospital;
+    private readonly Hospital _hospital;
     private readonly DoctorRepository _doctorRepository;
+    private Patient _selectedPatient;
     
     [ObservableProperty] string _surname;
     [ObservableProperty] string _name;
@@ -41,6 +42,17 @@ public partial class DoctorViewModel : ViewModelBase
         _doctorList = new ObservableCollection<Doctor>(doctors);
     }
 
+    public void SetSelectedPatient(Patient patient)
+    {
+        _selectedPatient = patient;
+        if (patient != null)
+        {
+            _name = patient.Name;
+            _surname = patient.Surname;
+            Console.WriteLine($"[DoctorViewModel] Пациент установлен: {patient.Surname} {patient.Name} (ID: {patient.Id})");
+        }
+    }
+
     [RelayCommand]
     public void StartTest()
     {
@@ -63,13 +75,21 @@ public partial class DoctorViewModel : ViewModelBase
         var serviceRepository = _provider.GetRequiredService<ServiceRepository>();
         var vm = ActivatorUtilities.CreateInstance<ServiceViewModel>(_provider, _navigation, SelectedDoctor, 
             _hospital, serviceRepository, Name, Surname);
+        
+        // Передать пациента если он есть
+        if (_selectedPatient != null)
+        {
+            vm.ResetServices();
+            vm.SetPatient(_selectedPatient);
+            Console.WriteLine($"[DoctorViewModel] ServiceViewModel получит телефон: {_selectedPatient.PhoneNumber}");
+        }
+        
         _navigation.Navigate(vm);
     }
 
     [RelayCommand]
     public void GoBack()
     {
-        var vm = ActivatorUtilities.CreateInstance<HospitalViewModel>(_provider);
-        _navigation.Navigate(vm);
+        _navigation.GoBack();
     }
 }

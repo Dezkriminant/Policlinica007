@@ -1,0 +1,99 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="650"
+        x:Class="Policlinica.Views.PatientSelectionView"
+        x:DataType="viewModels:PatientSelectionViewModel"
+        Title="Выбор пациента"
+        WindowStartupLocation="CenterOwner"
+        Width="600"
+        Height="650"
+        Background="White">
+
+    <Window.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="CaretBrush" Value="Red"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="ListBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+    </Window.Styles>
+
+    <Border BorderBrush="DodgerBlue" CornerRadius="8" BorderThickness="2" Padding="20" Background="White">
+        <StackPanel Spacing="15">
+            <TextBlock Text="Выбор пациента" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Black"/>
+            
+            <!-- Поиск пациента -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Поиск пациента:" FontWeight="Bold" Foreground="Black"/>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBox Watermark="Введите для поиска..." Text="{Binding SearchText}" Height="40" Width="400"/>
+                    <Button Content="🔍 Поиск" 
+                            Background="DodgerBlue"
+                            Click="SearchButton_Click"
+                            Width="120"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Список пациентов -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Список пациентов:" FontWeight="Bold" Foreground="Black"/>
+                <ListBox ItemsSource="{Binding Patients}" 
+                         SelectedItem="{Binding SelectedPatient}"
+                         Height="280"
+                         BorderBrush="Black"
+                         BorderThickness="1"
+                         IsEnabled="True">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="10" BorderBrush="LightGray" BorderThickness="0,0,0,1" IsHitTestVisible="False">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Surname, StringFormat='Фамилия: {0}'}" 
+                                               FontSize="14" 
+                                               FontWeight="Bold"
+                                               Foreground="Black"/>
+                                    <TextBlock Text="{Binding Name, StringFormat='Имя: {0}'}" 
+                                               FontSize="12"
+                                               Foreground="DarkGray"/>
+                                    <TextBlock Text="{Binding PhoneNumber, StringFormat='Телефон: {0}'}" 
+                                               FontSize="12"
+                                               Foreground="DarkGray"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+
+            <!-- Кнопки действия -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15" Margin="0,15,0,0">
+                <Button Content="✓ Выбрать пациента" 
+                        Background="LimeGreen"
+                        Click="SelectButton_Click"
+                        IsEnabled="{Binding SelectedPatient, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                <Button Content="➕ Добавить нового" 
+                        Background="DodgerBlue"
+                        Click="AddNewButton_Click"/>
+                <Button Content="↶ Назад" 
+                        Background="Gray"
+                        Click="BackButton_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

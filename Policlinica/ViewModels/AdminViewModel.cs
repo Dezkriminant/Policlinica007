@@ -52,6 +52,7 @@ public partial class AdminViewModel : ViewModelBase
         }
 
         _allRecords = recordRep.GetRecord(Id);
+        UpdateRecordsWithStatus();
         RecordsList = new ObservableCollection<Record>(_allRecords);
     }
 
@@ -65,11 +66,39 @@ public partial class AdminViewModel : ViewModelBase
         _parentWindow = parentWindow;
     }
 
-    [RelayCommand]
-    void SearchRecords()
+    partial void OnSearchTextChanged(string value)
+    {
+        SearchRecords();
+    }
+
+    private void UpdateRecordsWithStatus()
+    {
+        var now = DateTime.Now;
+        foreach (var record in _allRecords)
+        {
+            try
+            {
+                if (DateTime.TryParse($"{record.RecordDate:yyyy-MM-dd} {record.AppointmentTime}", out DateTime appointmentDateTime))
+                {
+                    record.Status = appointmentDateTime < now ? "Прошедшая" : "Будущая";
+                }
+                else
+                {
+                    record.Status = "Будущая";
+                }
+            }
+            catch
+            {
+                record.Status = "Будущая";
+            }
+        }
+    }
+
+    private void SearchRecords()
     {
         if (string.IsNullOrWhiteSpace(SearchText))
         {
+            UpdateRecordsWithStatus();
             RecordsList = new ObservableCollection<Record>(_allRecords);
             return;
         }
@@ -79,6 +108,7 @@ public partial class AdminViewModel : ViewModelBase
                        r.ClientSurname.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
             .ToList();
 
+        UpdateRecordsWithStatus();
         RecordsList = new ObservableCollection<Record>(filteredRecords);
         StatusMessage = $"Найдено {filteredRecords.Count} записей";
     }
@@ -101,6 +131,7 @@ public partial class AdminViewModel : ViewModelBase
         {
             editWindow.Close();
             _allRecords = _recordRep.GetRecord(Id);
+            UpdateRecordsWithStatus();
             RecordsList = new ObservableCollection<Record>(_allRecords);
             SelectedRecord = null;
             SearchText = "";
@@ -126,6 +157,7 @@ public partial class AdminViewModel : ViewModelBase
             {
                 StatusMessage = "Запись успешно удалена";
                 _allRecords = _recordRep.GetRecord(Id);
+                UpdateRecordsWithStatus();
                 RecordsList = new ObservableCollection<Record>(_allRecords);
                 SelectedRecord = null;
                 SearchText = "";
@@ -145,7 +177,20 @@ public partial class AdminViewModel : ViewModelBase
     [RelayCommand]
     void GoService()
     {
-        var vm = ActivatorUtilities.CreateInstance<HospitalViewModel>(_provider);
+        var vm = ActivatorUtilities.CreateInstance<PatientListViewModel>(_provider);
+        vm.SetOnPatientSelected(patient =>
+        {
+            var hospitalVm = ActivatorUtilities.CreateInstance<HospitalViewModel>(_provider);
+            hospitalVm.SetSelectedPatient(patient);
+            _navigation.Navigate(hospitalVm);
+        });
+        _navigation.Navigate(vm);
+    }
+
+    [RelayCommand]
+    void GoPatientManagement()
+    {
+        var vm = ActivatorUtilities.CreateInstance<PatientManagementViewModel>(_provider);
         _navigation.Navigate(vm);
     }
 

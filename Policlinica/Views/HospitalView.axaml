@@ -5,9 +5,20 @@
         xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
         mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="700"
         x:Class="Policlinica.Views.HospitalView"
-        x:DataType="viewModels:HospitalViewModel">
+        x:DataType="viewModels:HospitalViewModel"
+        Background="Black">
 
     <UserControl.Styles>
+        <Style Selector="Button">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="DataGrid">
+            <Setter Property="IsReadOnly" Value="True"/>
+        </Style>
         <Style Selector="DataGridCell">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="#2a2a2a"/>
@@ -21,45 +32,42 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="40" Spacing="20">
             
-            <TextBlock Text="Выберите больницу" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Black"/>
+            <TextBlock Text="Выберите больницу" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
             
             <!-- Список больниц -->
-            <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
-                <StackPanel Spacing="10">
-                    <TextBlock Text="Доступные медицинские учреждения:" FontWeight="Bold" FontSize="14" Foreground="Black"/>
+            <Border BorderBrush="White" BorderThickness="2" Padding="20" CornerRadius="8" Background="Black">
+                <StackPanel Spacing="15">
+                    <TextBlock Text="Доступные медицинские учреждения:" FontWeight="Bold" FontSize="16" Foreground="White"/>
                     <DataGrid ItemsSource="{Binding HospitalList}" 
                               SelectedItem="{Binding SelectedHospital}"
                               Width="700"
-                              Height="250"
-                              CanUserResizeColumns="True"
+                              Height="280"
+                              CanUserResizeColumns="False"
+                              CanUserReorderColumns="False"
                               CanUserSortColumns="True"
+                              IsReadOnly="True"
                               Background="#333333">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Name}" Header="Название" Width="200"/>
-                            <DataGridTextColumn Binding="{Binding Address}" Header="Адрес" Width="250"/>
-                            <DataGridTextColumn Binding="{Binding WorkingHoursStart}" Header="Открытие" Width="100"/>
-                            <DataGridTextColumn Binding="{Binding WorkingHoursEnd}" Header="Закрытие" Width="100"/>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Название" Width="180"/>
+                            <DataGridTextColumn Binding="{Binding Address}" Header="Адрес" Width="230"/>
+                            <DataGridTextColumn Binding="{Binding WorkingHoursStart}" Header="Открытие" Width="90"/>
+                            <DataGridTextColumn Binding="{Binding WorkingHoursEnd}" Header="Закрытие" Width="90"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
             </Border>
 
             <!-- Статус -->
-            <TextBlock Text="{Binding StatusMessage}" Foreground="Red" FontSize="14" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding StatusMessage}" Foreground="Yellow" FontSize="14" TextWrapping="Wrap" MinHeight="20"/>
 
             <!-- Кнопки -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
-                <Button Content="Продолжить" 
-                        FontSize="16" 
-                        Padding="20,12" 
-                        Background="Green" 
-                        Foreground="White"
-                        Command="{Binding SelectHospitalCommand}"/>
-                <Button Content="Назад" 
-                        FontSize="16" 
-                        Padding="20,12" 
-                        Background="Gray" 
-                        Foreground="White"
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20" Margin="0,20,0,0">
+                <Button Content="✓ Продолжить" 
+                        Background="LimeGreen"
+                        Command="{Binding SelectHospitalCommand}"
+                        IsEnabled="{Binding SelectedHospital, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                <Button Content="↶ Назад" 
+                        Background="Gray"
                         Command="{Binding GoBackCommand}"/>
             </StackPanel>
         </StackPanel>

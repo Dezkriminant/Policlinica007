@@ -12,9 +12,11 @@ public partial class BloodSugarInputViewModel : ViewModelBase
     private readonly BloodSugarRepository _bloodSugarRepository;
     private readonly Navigation _navigation;
     private readonly IServiceProvider _provider;
+    private readonly RecordRep _recordRep;
     private Record _selectedRecord;
+    private Patient _selectedPatient;
 
-    [ObservableProperty] decimal sugarLevel = 0;
+    [ObservableProperty] string sugarLevel = "";
     [ObservableProperty] string measurementDate = DateTime.Now.ToString("yyyy-MM-dd");
     [ObservableProperty] ObservableCollection<BloodSugarRecord> bloodSugarHistory = new();
     [ObservableProperty] string statusMessage = "";
@@ -23,11 +25,12 @@ public partial class BloodSugarInputViewModel : ViewModelBase
 
     private Action _closeAction;
 
-    public BloodSugarInputViewModel(BloodSugarRepository bloodSugarRepository, Navigation navigation, IServiceProvider provider)
+    public BloodSugarInputViewModel(BloodSugarRepository bloodSugarRepository, Navigation navigation, IServiceProvider provider, RecordRep recordRep)
     {
         _bloodSugarRepository = bloodSugarRepository;
         _navigation = navigation;
         _provider = provider;
+        _recordRep = recordRep;
     }
 
     public void SetSelectedRecord(Record record)
@@ -41,6 +44,23 @@ public partial class BloodSugarInputViewModel : ViewModelBase
         }
     }
 
+    public void SetSelectedPatient(Patient patient)
+    {
+        _selectedPatient = patient;
+        if (patient != null)
+        {
+            PatientInfo = $"Пациент: {patient.Name} {patient.Surname}";
+            
+            // Попробать найти последнюю запись этого пациента, или создать фиктивную
+            var userRepository = _provider.GetRequiredService<UserRepository>();
+            var users = userRepository.GetUserId("", ""); // Получить текущего пользователя
+            
+            // Используем ID пациента как ID для измерений
+            RecordId = patient.Id;
+            LoadBloodSugarHistory();
+        }
+    }
+
     public void SetCloseAction(Action closeAction)
     {
         _closeAction = closeAction;
@@ -49,7 +69,13 @@ public partial class BloodSugarInputViewModel : ViewModelBase
     private void LoadBloodSugarHistory()
     {
         if (RecordId <= 0) return;
-        var records = _bloodSugarRepository.GetBloodSugarByRecord(RecordId);
+        
+        // Если это пациент (SetSelectedPatient), используем GetBloodSugarByPatientId
+        // Если это запись (SetSelectedRecord), используем GetBloodSugarByRecord
+        var records = (_selectedPatient != null && _selectedRecord == null)
+            ? _bloodSugarRepository.GetBloodSugarByPatientId(RecordId)
+            : _bloodSugarRepository.GetBloodSugarByRecord(RecordId);
+        
         BloodSugarHistory = new ObservableCollection<BloodSugarRecord>(records);
     }
 
@@ -58,13 +84,19 @@ public partial class BloodSugarInputViewModel : ViewModelBase
     {
         if (RecordId <= 0)
         {
-            StatusMessage = "Ошибка: запись не выбрана";
+            StatusMessage = "Ошибка: пациент не выбран";
             return;
         }
 
-        if (SugarLevel <= 0)
+        if (string.IsNullOrWhiteSpace(SugarLevel) || !decimal.TryParse(SugarLevel, out decimal sugarValue))
         {
             StatusMessage = "Введите корректный уровень сахара";
+            return;
+        }
+
+        if (sugarValue <= 0)
+        {
+            StatusMessage = "Уровень сахара должен быть больше нуля";
             return;
         }
 
@@ -76,11 +108,12 @@ public partial class BloodSugarInputViewModel : ViewModelBase
 
         try
         {
-            bool inserted = _bloodSugarRepository.InsertBloodSugar(RecordId, SugarLevel, date);
+            // Если записи нет (измеряем от пациента), используем RecordId как patientId
+            bool inserted = _bloodSugarRepository.InsertBloodSugar(RecordId, sugarValue, date);
             if (inserted)
             {
                 StatusMessage = "Данные сахара успешно сохранены";
-                SugarLevel = 0;
+                SugarLevel = "";
                 MeasurementDate = DateTime.Now.ToString("yyyy-MM-dd");
                 LoadBloodSugarHistory();
             }
@@ -128,7 +161,6 @@ public partial class BloodSugarInputViewModel : ViewModelBase
     [RelayCommand]
     void GoBack()
     {
-        var vm = ActivatorUtilities.CreateInstance<AdminViewModel>(_provider);
-        _navigation.Navigate(vm);
+        _navigation.GoBack();
     }
 }

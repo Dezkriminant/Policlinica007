@@ -12,6 +12,7 @@ public partial class HospitalViewModel : ViewModelBase
     private readonly IServiceProvider _provider;
     private readonly Navigation _navigation;
     private readonly HospitalRepository _hospitalRepository;
+    private Patient _selectedPatient;
 
     [ObservableProperty] ObservableCollection<Hospital> hospitalList = new();
     [ObservableProperty] Hospital selectedHospital;
@@ -32,6 +33,11 @@ public partial class HospitalViewModel : ViewModelBase
         HospitalList = new ObservableCollection<Hospital>(hospitals);
     }
 
+    public void SetSelectedPatient(Patient patient)
+    {
+        _selectedPatient = patient;
+    }
+
     [RelayCommand]
     void SelectHospital()
     {
@@ -42,13 +48,16 @@ public partial class HospitalViewModel : ViewModelBase
         }
 
         var vm = ActivatorUtilities.CreateInstance<DoctorViewModel>(_provider, SelectedHospital);
+        if (_selectedPatient != null)
+        {
+            vm.SetSelectedPatient(_selectedPatient);
+        }
         _navigation.Navigate(vm);
     }
 
     [RelayCommand]
     void GoBack()
     {
-        var vm = ActivatorUtilities.CreateInstance<AdminViewModel>(_provider);
-        _navigation.Navigate(vm);
+        _navigation.GoBack();
     }
 }

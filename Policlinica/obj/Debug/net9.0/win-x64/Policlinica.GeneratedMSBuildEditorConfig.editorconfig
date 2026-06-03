@@ -32,6 +32,9 @@ build_property.EnableCodeStyleSeverity =
 [C:/Users/vikto/RiderProjects/Policlinica/Policlinica/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/AddPatientView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/AdminView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
@@ -44,6 +47,9 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/DateTimeView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/DoctorSelectionView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/DoctorView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
@@ -54,6 +60,15 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/HospitalView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/PatientListView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/PatientManagementView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/PatientSelectionView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/RecordItemsView.axaml]

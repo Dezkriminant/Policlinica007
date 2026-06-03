@@ -34,12 +34,5 @@ public class Record
     public string PhoneNumber { get; set; }
 
     // Статус: прошла или нет
-    public string Status
-    {
-        get
-        {
-            var appointmentDateTime = DateTime.ParseExact($"{RecordDate:yyyy-MM-dd} {AppointmentTime}", "yyyy-MM-dd HH:mm", null);
-            return appointmentDateTime < DateTime.Now ? "Прошла" : "Будущая";
-        }
-    }
+    public string Status { get; set; } = "Будущая";
 }

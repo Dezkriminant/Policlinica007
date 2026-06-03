@@ -3,75 +3,94 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:Policlinica.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
         x:Class="Policlinica.Views.DoctorView"
-        x:DataType="vm:DoctorViewModel">
+        x:DataType="vm:DoctorViewModel"
+        Background="Black">
 
     <UserControl.Styles>
         <Style Selector="TextBox">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="CaretBrush" Value="Red"/>
-            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderBrush" Value="White"/>
             <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="DataGrid">
+            <Setter Property="IsReadOnly" Value="True"/>
+        </Style>
+        <Style Selector="DataGridCell">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#2a2a2a"/>
+        </Style>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#1a1a1a"/>
         </Style>
     </UserControl.Styles>
     
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="40" Spacing="20">
             
-            <TextBlock Text="Создание записи" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock Text="Создание записи" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
             
-            <!-- Ввод имени клиента -->
-            <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
-                <StackPanel Spacing="10">
-                    <TextBlock Text="Имя клиента:" FontWeight="Bold" FontSize="14"/>
-                    <TextBox Text="{Binding Name}" Padding="10" FontSize="13" Watermark="Введите имя"/>
+            <!-- Имя клиента (read-only) -->
+            <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Имя клиента:" FontWeight="Bold" FontSize="14" Foreground="White"/>
+                    <TextBox Text="{Binding Name}" IsReadOnly="True" Background="DarkGray" Foreground="White"/>
                 </StackPanel>
             </Border>
             
-            <!-- Ввод фамилии клиента -->
-            <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
-                <StackPanel Spacing="10">
-                    <TextBlock Text="Фамилия клиента:" FontWeight="Bold" FontSize="14"/>
-                    <TextBox Text="{Binding Surname}" Padding="10" FontSize="13" Watermark="Введите фамилию"/>
+            <!-- Фамилия клиента (read-only) -->
+            <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Фамилия клиента:" FontWeight="Bold" FontSize="14" Foreground="White"/>
+                    <TextBox Text="{Binding Surname}" IsReadOnly="True" Background="DarkGray" Foreground="White"/>
                 </StackPanel>
             </Border>
 
-            <!-- Выбор врача -->
-            <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
-                <StackPanel Spacing="10">
-                    <TextBlock Text="Выберите врача:" FontWeight="Bold" FontSize="14"/>
+            <!-- Выбор врача с отображением кабинета -->
+            <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Выберите врача:" FontWeight="Bold" FontSize="14" Foreground="White"/>
                     <DataGrid ItemsSource="{Binding DoctorList}"
                               SelectedItem="{Binding SelectedDoctor}"
-                              Width="650"
-                              Height="250"
-                              CanUserResizeColumns="True"
-                              CanUserSortColumns="True">
+                              Height="200"
+                              Width="600"
+                              CanUserResizeColumns="False"
+                              CanUserReorderColumns="False"
+                              CanUserSortColumns="True"
+                              IsReadOnly="True"
+                              Background="#333333">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Title}" Header="Специальность" Width="250"/>
-                            <DataGridTextColumn Binding="{Binding Cabinet}" Header="Кабинет" Width="200"/>
+                            <DataGridTextColumn Binding="{Binding Title}" Header="Специальность" Width="300"/>
+                            <DataGridTextColumn Binding="{Binding Cabinet}" Header="Кабинет" Width="300"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
             </Border>
 
             <!-- Статус -->
-            <TextBlock Text="{Binding StatusMessage}" Foreground="Red" FontSize="14" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding StatusMessage}" Foreground="Yellow" FontSize="14" TextWrapping="Wrap" MinHeight="20"/>
 
             <!-- Кнопки -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
-                <Button Content="Далее" 
-                        FontSize="16" 
-                        Padding="20,12" 
-                        Background="Green" 
-                        Foreground="White"
-                        Command="{Binding StartTestCommand}"/>
-                <Button Content="Назад" 
-                        FontSize="16" 
-                        Padding="20,12" 
-                        Background="Gray" 
-                        Foreground="White"
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20" Margin="0,20,0,0">
+                <Button Content="✓ Далее" 
+                        Background="LimeGreen"
+                        Command="{Binding StartTestCommand}"
+                        IsEnabled="{Binding SelectedDoctor, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                <Button Content="↶ Назад" 
+                        Background="Gray"
                         Command="{Binding GoBackCommand}"/>
             </StackPanel>
         </StackPanel>

@@ -97,7 +97,6 @@ public partial class SugarCheckViewModel : ViewModelBase
     [RelayCommand]
     public void Back()
     {
-        var vm = ActivatorUtilities.CreateInstance<AdminViewModel>(_provider);
-        _navigation.Navigate(vm);
+        _navigation.GoBack();
     }
 }

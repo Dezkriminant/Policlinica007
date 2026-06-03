@@ -5,52 +5,68 @@
         xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
         mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="800"
         x:Class="Policlinica.Views.BloodSugarInputView"
-        x:DataType="viewModels:BloodSugarInputViewModel">
+        x:DataType="viewModels:BloodSugarInputViewModel"
+        Background="Black">
 
     <UserControl.Styles>
         <Style Selector="TextBox">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="CaretBrush" Value="Red"/>
-            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderBrush" Value="White"/>
             <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="DataGrid">
+            <Setter Property="IsReadOnly" Value="True"/>
+        </Style>
+        <Style Selector="DataGridCell">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#2a2a2a"/>
+        </Style>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#1a1a1a"/>
         </Style>
     </UserControl.Styles>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="30" Spacing="20">
+        <StackPanel Margin="40" Spacing="20">
             
-            <Grid ColumnDefinitions="*,Auto">
-                <TextBlock Grid.Column="0" Text="Измерение уровня сахара в крови" FontSize="24" FontWeight="Bold" Foreground="Black"/>
-                <Button Grid.Column="1" Content="← Назад в админ панель" 
-                        FontSize="14" 
-                        Padding="15,8" 
-                        Background="Gray" 
-                        Foreground="White"
-                        Command="{Binding GoBackCommand}"/>
-            </Grid>
+            <StackPanel Spacing="8" HorizontalAlignment="Center">
+                <TextBlock Text="Измерение уровня сахара в крови" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding PatientInfo}" FontSize="16" Foreground="LimeGreen" HorizontalAlignment="Center" FontWeight="Bold"/>
+            </StackPanel>
 
-            
-            <Border BorderBrush="LightGray" BorderThickness="1" Padding="0" CornerRadius="5" ClipToBounds="True">
-                <StackPanel Spacing="0">
+            <!-- История измерений -->
+            <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                <StackPanel Spacing="10">
                     <TextBlock Text="История измерений:" 
-                               FontWeight="Bold" FontSize="16" Foreground="Black" Padding="15,15,15,10"/>
-                    <ScrollViewer MaxHeight="400" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                               FontWeight="Bold" FontSize="14" Foreground="White"/>
+                    <ScrollViewer MaxHeight="300" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                         <DataGrid ItemsSource="{Binding BloodSugarHistory}"
-                                  Width="800"
                                   CanUserResizeColumns="True"
-                                  CanUserSortColumns="True">
+                                  CanUserSortColumns="True"
+                                  IsReadOnly="True"
+                                  Background="#333333">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding MeasurementDate}" Header="Дата/Время" Width="200"/>
-                                <DataGridTextColumn Binding="{Binding SugarLevel}" Header="Уровень сахара (мг/дл)" Width="250"/>
-                                <DataGridTemplateColumn Header="Действие" Width="150">
+                                <DataGridTextColumn Binding="{Binding MeasurementDate, StringFormat='yyyy-MM-dd'}" Header="Дата" Width="120"/>
+                                <DataGridTextColumn Binding="{Binding SugarLevel}" Header="Уровень (мг/дл)" Width="120"/>
+                                <DataGridTemplateColumn Header="Удалить" Width="100">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Content="Удалить" 
-                                                    FontSize="12" 
-                                                    Padding="10,5" 
-                                                    Background="Red" 
-                                                    Foreground="White"
+                                            <Button Content="🗑️ Удалить" 
+                                                    Background="Crimson"
+                                                    FontSize="12"
+                                                    Padding="8,5"
                                                     Command="{Binding $parent[DataGrid].DataContext.DeleteRecordCommand}"
                                                     CommandParameter="{Binding}"/>
                                         </DataTemplate>
@@ -62,36 +78,35 @@
                 </StackPanel>
             </Border>
 
-            
-            <Border BorderBrush="DodgerBlue" BorderThickness="2" Padding="20" CornerRadius="5" Background="White">
-                <StackPanel Spacing="15">
-                    <TextBlock Text="Добавить новое измерение:" FontWeight="Bold" FontSize="16" Foreground="Black"/>
-                    
+            <!-- Добавление нового измерения -->
+            <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="15" Background="Black">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Добавить новое измерение:" FontWeight="Bold" FontSize="14" Foreground="White"/>
                     
                     <StackPanel Spacing="8">
-                        <TextBlock Text="Уровень сахара в крови (мг/дл):" FontWeight="Bold" Foreground="Black" FontSize="14"/>
-                        <TextBox Text="{Binding SugarLevel}" Watermark="Введите значение" Padding="12" FontSize="14"/>
+                        <TextBlock Text="Уровень сахара (мг/дл): *" FontWeight="Bold" Foreground="White"/>
+                        <TextBox Text="{Binding SugarLevel}" Watermark="Введите значение" MaxLength="10"/>
                     </StackPanel>
 
-                   
                     <StackPanel Spacing="8">
-                        <TextBlock Text="Дата измерения (YYYY-MM-DD):" FontWeight="Bold" Foreground="Black" FontSize="14"/>
-                        <TextBox Text="{Binding MeasurementDate}" Padding="12" FontSize="14"/>
+                        <TextBlock Text="Дата (YYYY-MM-DD): *" FontWeight="Bold" Foreground="White"/>
+                        <TextBox Text="{Binding MeasurementDate}" MaxLength="10"/>
                     </StackPanel>
 
-                    
-                    <TextBlock Text="{Binding StatusMessage}" Foreground="Green" FontSize="14" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding StatusMessage}" Foreground="Yellow" FontSize="12" TextWrapping="Wrap" MinHeight="20"/>
 
-                    
-                    <Button Content="Сохранить измерение" 
-                            FontSize="14" 
-                            Padding="18,12" 
-                            Background="Green" 
-                            Foreground="White"
-                            HorizontalAlignment="Center"
+                    <Button Content="💾 Сохранить измерение" 
+                            Background="LimeGreen"
                             Command="{Binding AddBloodSugarCommand}"/>
                 </StackPanel>
             </Border>
+
+            <!-- Кнопка назад -->
+            <Button Content="↶ Назад" 
+                    Background="Gray"
+                    Command="{Binding GoBackCommand}"
+                    HorizontalAlignment="Center"
+                    Width="150"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
