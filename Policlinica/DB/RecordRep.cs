@@ -212,4 +212,44 @@ public class RecordRep:BaseRep
         return false;
     }
 
+    public List<HospitalStatistic> GetHospitalStatistics()
+    {
+        var stats = new List<HospitalStatistic>();
+        
+        string sql = @"select 
+                        coalesce(h.id, 999) as hospital_id,
+                        coalesce(h.name, 'Больница №3') as hospital_name,
+                        count(r.id) as record_count,
+                        sum(r.total_amount) as total_revenue
+                       from records r
+                       left join hospitals h on r.hospital_id = h.id
+                       group by r.hospital_id, h.id, h.name
+                       order by hospital_id asc";
+        
+        try
+        {
+            using (var mc = new MySqlCommand(sql, connection))
+            {
+                using (var reader = mc.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        stats.Add(new HospitalStatistic
+                        {
+                            HospitalName = reader.GetString("hospital_name"),
+                            RecordCount = reader.GetInt32("record_count"),
+                            TotalRevenue = reader.IsDBNull(reader.GetOrdinal("total_revenue")) ? 0 : reader.GetInt32("total_revenue")
+                        });
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error getting hospital statistics: {e}");
+        }
+        
+        return stats;
+    }
+
 }

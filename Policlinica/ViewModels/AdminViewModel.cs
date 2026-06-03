@@ -114,6 +114,13 @@ public partial class AdminViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    void GoStatistics()
+    {
+        var vm = ActivatorUtilities.CreateInstance<StatisticsViewModel>(_provider);
+        _navigation.Navigate(vm);
+    }
+
+    [RelayCommand]
     void EditRecord()
     {
         if (SelectedRecord == null)

@@ -1,0 +1,88 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="700"
+        x:Class="Policlinica.Views.StatisticsView"
+        x:DataType="viewModels:StatisticsViewModel"
+        Background="Black">
+
+    <UserControl.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="40" Spacing="30">
+            <TextBlock Text="Статистика по больницам" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
+            
+            <!-- Итоговая информация -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="40">
+                <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="20" Background="Black">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Всего записей:" FontSize="14" FontWeight="Bold" Foreground="LimeGreen"/>
+                        <TextBlock FontSize="24" FontWeight="Bold" Foreground="White" Text="{Binding TotalRecords}"/>
+                    </StackPanel>
+                </Border>
+                
+                <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="20" Background="Black">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Общий доход:" FontSize="14" FontWeight="Bold" Foreground="LimeGreen"/>
+                        <TextBlock FontSize="24" FontWeight="Bold" Foreground="White" Text="{Binding TotalRevenue}"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- Таблица со статистикой -->
+            <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="30" Background="Black">
+                <StackPanel Spacing="20">
+                    <TextBlock Text="Статистика по больницам:" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                    
+                    <!-- Заголовок таблицы -->
+                    <StackPanel Orientation="Horizontal" Spacing="0">
+                        <TextBlock Text="Больница" FontWeight="Bold" FontSize="13" Foreground="LimeGreen" Width="350"/>
+                        <TextBlock Text="Записей" FontWeight="Bold" FontSize="13" Foreground="DodgerBlue" Width="120"/>
+                        <TextBlock Text="Доход (руб.)" FontWeight="Bold" FontSize="13" Foreground="White" Width="150"/>
+                    </StackPanel>
+
+                    <!-- Разделитель -->
+                    <Border Height="1" Background="#444"/>
+
+                    <!-- Данные -->
+                    <ItemsControl ItemsSource="{Binding HospitalStatistics}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Spacing="10">
+                                    <StackPanel Orientation="Horizontal" Spacing="0">
+                                        <TextBlock Text="{Binding HospitalName}" FontSize="13" Foreground="White" Width="350"/>
+                                        <TextBlock Text="{Binding RecordCount}" FontSize="13" Foreground="DodgerBlue" Width="120"/>
+                                        <TextBlock Text="{Binding TotalRevenue}" FontSize="13" Foreground="White" Width="150"/>
+                                    </StackPanel>
+                                    <Border Height="1" Background="#333"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- Кнопка назад -->
+            <Button Content="↶ Назад" 
+                    Background="Gray"
+                    Command="{Binding GoBackCommand}"
+                    HorizontalAlignment="Center"
+                    Width="150"
+                    Height="45"
+                    Margin="0,20,0,0"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

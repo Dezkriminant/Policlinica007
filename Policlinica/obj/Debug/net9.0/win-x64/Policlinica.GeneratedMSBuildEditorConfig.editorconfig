@@ -86,5 +86,8 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/StartView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/StatisticsView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/vikto/RiderProjects/Policlinica/Policlinica/Views/SugarCheckView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
