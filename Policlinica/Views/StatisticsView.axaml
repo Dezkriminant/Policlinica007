@@ -25,6 +25,33 @@
         <StackPanel Margin="40" Spacing="30">
             <TextBlock Text="Статистика по больницам" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
             
+            <!-- Выбор периода -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15">
+                <Button Content="📅 День" 
+                        Background="DodgerBlue"
+                        Command="{Binding SelectDayCommand}"
+                        Width="100"/>
+                <Button Content="📆 Неделя" 
+                        Background="DodgerBlue"
+                        Command="{Binding SelectWeekCommand}"
+                        Width="100"/>
+                <Button Content="📊 Месяц" 
+                        Background="DodgerBlue"
+                        Command="{Binding SelectMonthCommand}"
+                        Width="100"/>
+                <Button Content="📈 Год" 
+                        Background="DodgerBlue"
+                        Command="{Binding SelectYearCommand}"
+                        Width="100"/>
+            </StackPanel>
+
+            <!-- Текущий период -->
+            <TextBlock Text="{Binding SelectedPeriod, StringFormat='Период: {0}'}" 
+                       FontSize="14" 
+                       FontWeight="Bold" 
+                       Foreground="LimeGreen"
+                       HorizontalAlignment="Center"/>
+            
             <!-- Итоговая информация -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="40">
                 <Border BorderBrush="White" CornerRadius="8" BorderThickness="2" Padding="20" Background="Black">
@@ -49,9 +76,10 @@
                     
                     <!-- Заголовок таблицы -->
                     <StackPanel Orientation="Horizontal" Spacing="0">
-                        <TextBlock Text="Больница" FontWeight="Bold" FontSize="13" Foreground="LimeGreen" Width="350"/>
-                        <TextBlock Text="Записей" FontWeight="Bold" FontSize="13" Foreground="DodgerBlue" Width="120"/>
-                        <TextBlock Text="Доход (руб.)" FontWeight="Bold" FontSize="13" Foreground="White" Width="150"/>
+                        <TextBlock Text="Больница" FontWeight="Bold" FontSize="13" Foreground="LimeGreen" Width="280"/>
+                        <TextBlock Text="Завершено" FontWeight="Bold" FontSize="13" Foreground="DodgerBlue" Width="130"/>
+                        <TextBlock Text="Запланировано" FontWeight="Bold" FontSize="13" Foreground="Orange" Width="140"/>
+                        <TextBlock Text="Доход (руб.)" FontWeight="Bold" FontSize="13" Foreground="White" Width="120"/>
                     </StackPanel>
 
                     <!-- Разделитель -->
@@ -63,9 +91,10 @@
                             <DataTemplate>
                                 <StackPanel Spacing="10">
                                     <StackPanel Orientation="Horizontal" Spacing="0">
-                                        <TextBlock Text="{Binding HospitalName}" FontSize="13" Foreground="White" Width="350"/>
-                                        <TextBlock Text="{Binding RecordCount}" FontSize="13" Foreground="DodgerBlue" Width="120"/>
-                                        <TextBlock Text="{Binding TotalRevenue}" FontSize="13" Foreground="White" Width="150"/>
+                                        <TextBlock Text="{Binding HospitalName}" FontSize="13" Foreground="White" Width="280"/>
+                                        <TextBlock Text="{Binding CompletedCount}" FontSize="13" Foreground="DodgerBlue" Width="130"/>
+                                        <TextBlock Text="{Binding ScheduledCount}" FontSize="13" Foreground="Orange" Width="140"/>
+                                        <TextBlock Text="{Binding TotalRevenue}" FontSize="13" Foreground="White" Width="120"/>
                                     </StackPanel>
                                     <Border Height="1" Background="#333"/>
                                 </StackPanel>

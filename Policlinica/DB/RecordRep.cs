@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Options;
 using MySqlConnector;
 
@@ -212,35 +213,73 @@ public class RecordRep:BaseRep
         return false;
     }
 
-    public List<HospitalStatistic> GetHospitalStatistics()
+    public List<HospitalStatistic> GetHospitalStatistics(int userId, DateTime dateFrom, DateTime dateTo)
     {
-        var stats = new List<HospitalStatistic>();
+        var stats = new Dictionary<string, HospitalStatistic>();
         
         string sql = @"select 
                         coalesce(h.id, 999) as hospital_id,
                         coalesce(h.name, 'Больница №3') as hospital_name,
+                        case 
+                            when concat(r.record_date, ' ', r.appointment_time) < now() then 'completed'
+                            else 'scheduled'
+                        end as status,
                         count(r.id) as record_count,
                         sum(r.total_amount) as total_revenue
                        from records r
                        left join hospitals h on r.hospital_id = h.id
-                       group by r.hospital_id, h.id, h.name
-                       order by hospital_id asc";
+                       where r.user_id = @userId 
+                         and r.record_date >= @dateFrom 
+                         and r.record_date <= @dateTo
+                       group by r.hospital_id, h.id, h.name, status
+                       order by hospital_id asc, status asc";
         
         try
         {
             using (var mc = new MySqlCommand(sql, connection))
             {
+                mc.Parameters.AddWithValue("@userId", userId);
+                mc.Parameters.AddWithValue("@dateFrom", dateFrom);
+                mc.Parameters.AddWithValue("@dateTo", dateTo);
+                
+                Console.WriteLine($"[GetHospitalStatistics] Executing query for userId={userId}, from={dateFrom:yyyy-MM-dd}, to={dateTo:yyyy-MM-dd}");
+                
                 using (var reader = mc.ExecuteReader())
                 {
+                    int rowCount = 0;
                     while (reader.Read())
                     {
-                        stats.Add(new HospitalStatistic
+                        rowCount++;
+                        string hospitalName = reader.GetString("hospital_name");
+                        string status = reader.GetString("status");
+                        int recordCount = reader.GetInt32("record_count");
+                        int totalRevenue = reader.IsDBNull(reader.GetOrdinal("total_revenue")) ? 0 : reader.GetInt32("total_revenue");
+                        
+                        Console.WriteLine($"  Row {rowCount}: {hospitalName} ({status}) - {recordCount} records, {totalRevenue} revenue");
+                        
+                        if (!stats.ContainsKey(hospitalName))
                         {
-                            HospitalName = reader.GetString("hospital_name"),
-                            RecordCount = reader.GetInt32("record_count"),
-                            TotalRevenue = reader.IsDBNull(reader.GetOrdinal("total_revenue")) ? 0 : reader.GetInt32("total_revenue")
-                        });
+                            stats[hospitalName] = new HospitalStatistic
+                            {
+                                HospitalName = hospitalName,
+                                CompletedCount = 0,
+                                ScheduledCount = 0,
+                                TotalRevenue = 0
+                            };
+                        }
+                        
+                        if (status == "completed")
+                        {
+                            stats[hospitalName].CompletedCount = recordCount;
+                        }
+                        else
+                        {
+                            stats[hospitalName].ScheduledCount = recordCount;
+                        }
+                        
+                        stats[hospitalName].TotalRevenue += totalRevenue;
                     }
+                    Console.WriteLine($"[GetHospitalStatistics] Total rows: {rowCount}");
                 }
             }
         }
@@ -249,7 +288,7 @@ public class RecordRep:BaseRep
             Console.WriteLine($"Error getting hospital statistics: {e}");
         }
         
-        return stats;
+        return stats.Values.ToList();
     }
 
 }
